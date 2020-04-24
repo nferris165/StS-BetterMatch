@@ -91,92 +91,92 @@ public class BetterMatchEvent extends AbstractImageEvent {
     }
 
     public void update() {
-        super.update();// 106
-        this.cards.update();// 107
-        if (this.screen == CUR_SCREEN.PLAY) {// 109
-            this.updateControllerInput();// 110
-            this.updateMatchGameLogic();// 111
-        } else if (this.screen == CUR_SCREEN.CLEAN_UP) {// 112
-            if (!this.cleanUpCalled) {// 113
-                this.cleanUpCalled = true;// 114
-                this.cleanUpCards();// 115
+        super.update();
+        this.cards.update();
+        if (this.screen == CUR_SCREEN.PLAY) {
+            this.updateControllerInput();
+            this.updateMatchGameLogic();
+        } else if (this.screen == CUR_SCREEN.CLEAN_UP) {
+            if (!this.cleanUpCalled) {
+                this.cleanUpCalled = true;
+                this.cleanUpCards();
             }
 
-            if (this.waitTimer > 0.0F) {// 117
-                this.waitTimer -= Gdx.graphics.getDeltaTime();// 118
-                if (this.waitTimer < 0.0F) {// 119
-                    this.waitTimer = 0.0F;// 120
-                    this.screen = CUR_SCREEN.COMPLETE;// 121
-                    GenericEventDialog.show();// 122
-                    this.imageEventText.updateBodyText(MSG_3);// 123
-                    this.imageEventText.clearRemainingOptions();// 124
-                    this.imageEventText.setDialogOption(OPTIONS[1]);// 125
+            if (this.waitTimer > 0.0F) {
+                this.waitTimer -= Gdx.graphics.getDeltaTime();
+                if (this.waitTimer < 0.0F) {
+                    this.waitTimer = 0.0F;
+                    this.screen = CUR_SCREEN.COMPLETE;
+                    GenericEventDialog.show();
+                    this.imageEventText.updateBodyText(MSG_3);
+                    this.imageEventText.clearRemainingOptions();
+                    this.imageEventText.setDialogOption(OPTIONS[1]);
                 }
             }
         }
 
-        if (!GenericEventDialog.waitForInput) {// 130
-            this.buttonEffect(GenericEventDialog.getSelectedOption());// 131
+        if (!GenericEventDialog.waitForInput) {
+            this.buttonEffect(GenericEventDialog.getSelectedOption());
         }
 
     }
 
     private void updateControllerInput() {
-        if (Settings.isControllerMode) {// 136
-            boolean anyHovered = false;// 140
-            int index = 0;// 141
+        if (Settings.isControllerMode) {
+            boolean anyHovered = false;
+            int index = 0;
 
-            for(Iterator var3 = this.cards.group.iterator(); var3.hasNext(); ++index) {// 142 147
+            for(Iterator var3 = this.cards.group.iterator(); var3.hasNext(); ++index) {
                 AbstractCard c = (AbstractCard)var3.next();
-                if (c.hb.hovered) {// 143
-                    anyHovered = true;// 144
-                    break;// 145
+                if (c.hb.hovered) {
+                    anyHovered = true;
+                    break;
                 }
             }
 
-            if (!anyHovered) {// 150
+            if (!anyHovered) {
                 Gdx.input.setCursorPosition((int)(this.cards.group.get(0)).hb.cX, Settings.HEIGHT - (int)(this.cards.group.get(0)).hb.cY);
             } else {
                 float x;
-                if (!CInputActionSet.up.isJustPressed() && !CInputActionSet.altUp.isJustPressed()) {// 155
-                    if (!CInputActionSet.down.isJustPressed() && !CInputActionSet.altDown.isJustPressed()) {// 161
-                        if (!CInputActionSet.left.isJustPressed() && !CInputActionSet.altLeft.isJustPressed()) {// 168
-                            if (CInputActionSet.right.isJustPressed() || CInputActionSet.altRight.isJustPressed()) {// 174
-                                x = (this.cards.group.get(index)).hb.cX + 210.0F * Settings.scale;// 175
-                                if (x > 1375.0F * Settings.scale) {// 176
-                                    x = 640.0F * Settings.scale;// 177
+                if (!CInputActionSet.up.isJustPressed() && !CInputActionSet.altUp.isJustPressed()) {
+                    if (!CInputActionSet.down.isJustPressed() && !CInputActionSet.altDown.isJustPressed()) {
+                        if (!CInputActionSet.left.isJustPressed() && !CInputActionSet.altLeft.isJustPressed()) {
+                            if (CInputActionSet.right.isJustPressed() || CInputActionSet.altRight.isJustPressed()) {
+                                x = (this.cards.group.get(index)).hb.cX + 210.0F * Settings.scale;
+                                if (x > 1375.0F * Settings.scale) {
+                                    x = 640.0F * Settings.scale;
                                 }
 
-                                Gdx.input.setCursorPosition((int)x, Settings.HEIGHT - (int)(this.cards.group.get(index)).hb.cY);// 179
+                                Gdx.input.setCursorPosition((int)x, Settings.HEIGHT - (int)(this.cards.group.get(index)).hb.cY);
                             }
                         } else {
-                            x = (this.cards.group.get(index)).hb.cX - 210.0F * Settings.scale;// 169
-                            if (x < 530.0F * Settings.scale) {// 170
-                                x = 1270.0F * Settings.scale;// 171
+                            x = (this.cards.group.get(index)).hb.cX - 210.0F * Settings.scale;
+                            if (x < 530.0F * Settings.scale) {
+                                x = 1270.0F * Settings.scale;
                             }
 
-                            Gdx.input.setCursorPosition((int)x, Settings.HEIGHT - (int)(this.cards.group.get(index)).hb.cY);// 173
+                            Gdx.input.setCursorPosition((int)x, Settings.HEIGHT - (int)(this.cards.group.get(index)).hb.cY);
                         }
                     } else {
-                        x = (this.cards.group.get(index)).hb.cY - 230.0F * Settings.scale;// 162
-                        if (x < 175.0F * Settings.scale) {// 163
-                            x = 750.0F * Settings.scale;// 164
+                        x = (this.cards.group.get(index)).hb.cY - 230.0F * Settings.scale;
+                        if (x < 175.0F * Settings.scale) {
+                            x = 750.0F * Settings.scale;
                         }
 
-                        Gdx.input.setCursorPosition((int)(this.cards.group.get(index)).hb.cX, (int)((float)Settings.HEIGHT - x));// 166
+                        Gdx.input.setCursorPosition((int)(this.cards.group.get(index)).hb.cX, (int)((float)Settings.HEIGHT - x));
                     }
                 } else {
-                    x = (this.cards.group.get(index)).hb.cY + 230.0F * Settings.scale;// 156
-                    if (x > 865.0F * Settings.scale) {// 157
-                        x = 290.0F * Settings.scale;// 158
+                    x = (this.cards.group.get(index)).hb.cY + 230.0F * Settings.scale;
+                    if (x > 865.0F * Settings.scale) {
+                        x = 290.0F * Settings.scale;
                     }
 
-                    Gdx.input.setCursorPosition((int)(this.cards.group.get(index)).hb.cX, (int)((float)Settings.HEIGHT - x));// 160
+                    Gdx.input.setCursorPosition((int)(this.cards.group.get(index)).hb.cX, (int)((float)Settings.HEIGHT - x));
                 }
 
-                if (CInputActionSet.select.isJustPressed()) {// 182
-                    CInputActionSet.select.unpress();// 183
-                    InputHelper.justClickedLeft = true;// 184
+                if (CInputActionSet.select.isJustPressed()) {
+                    CInputActionSet.select.unpress();
+                    InputHelper.justClickedLeft = true;
                 }
             }
 
@@ -184,13 +184,11 @@ public class BetterMatchEvent extends AbstractImageEvent {
     }
 
     private void cleanUpCards() {
-        AbstractCard c;
-        for(Iterator var1 = this.cards.group.iterator(); var1.hasNext(); c.target_y = -300.0F * Settings.scale) {// 190 193
-            c = (AbstractCard)var1.next();
-            c.targetDrawScale = 0.5F;// 191
-            c.target_x = (float)Settings.WIDTH / 2.0F;// 192
+        for(AbstractCard c : this.cards.group) {
+            c.targetDrawScale = 0.5F;
+            c.target_x = (float)Settings.WIDTH / 2.0F;
+            c.target_y = -300.0F * Settings.scale;
         }
-
     }
 
     private void updateMatchGameLogic() {
