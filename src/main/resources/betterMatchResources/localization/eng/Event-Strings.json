@@ -2,11 +2,15 @@
   "betterMatch:BetterMatch": {
     "NAME": "Better Match and Keep",
     "DESCRIPTIONS": [
-      ""
+      "\" #bTwelve cards! Match them to keep them! #bFive tries, no do-overs. NL Are you ready? Let's start!\"",
+      "You complete the gremlin's game and look up. NL He disappeared?",
+      "A gremlin is madly shuffling cards on a table. This monster seems to be a harmless one. You approach him out of curiosity."
     ],
     "OPTIONS": [
-      "a",
-      "b"
+      "[Continue]",
+      "[Leave]",
+      "[Play]",
+      "Remaining Attempts: #y"
     ]
   }
 }

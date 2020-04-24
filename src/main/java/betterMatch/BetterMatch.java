@@ -182,7 +182,7 @@ public class BetterMatch implements
         Texture badgeTexture = TextureLoader.getTexture(BADGE_IMAGE);
         ModPanel settingsPanel = new ModPanel();
 
-        ModLabeledToggleButton ascLimitButton = new ModLabeledToggleButton("Enables Better Note interaction for all ascension levels.",
+        ModLabeledToggleButton ascLimitButton = new ModLabeledToggleButton("Enables ???",
                 350.0f, 750.0f, Settings.CREAM_COLOR, FontHelper.charDescFont,
                 disableAscLimit,
                 settingsPanel,
@@ -204,10 +204,16 @@ public class BetterMatch implements
         BaseMod.registerModBadge(badgeTexture, MODNAME, AUTHOR, DESCRIPTION, settingsPanel);
 
         //events
-        //BaseMod.addEvent(BetterMatchEvent.ID, BetterMatchEvent.class);
-        //BaseMod.addEvent(new AddEventParams.Builder(BetterMatchEvent.ID, BetterMatchEvent.class).eventType(EventUtils.EventType.SHRINE).bonusCondition(new EventCondition()).create());
         BaseMod.addEvent(new AddEventParams.Builder(BetterMatchEvent.ID, BetterMatchEvent.class)
-                .eventType(EventUtils.EventType.SHRINE).bonusCondition(() -> AbstractDungeon.player.gold > 100).create());
+                .eventType(EventUtils.EventType.SHRINE).bonusCondition(
+                        () -> {
+                            if(AbstractDungeon.ascensionLevel >= 15){
+                                return AbstractDungeon.player.gold > 100;
+                            } else{
+                                return AbstractDungeon.player.gold > 150;
+                            }
+                        }
+                        ).create());
 
         //audio
         loadAudio();
