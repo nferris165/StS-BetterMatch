@@ -1,5 +1,6 @@
 package betterMatch.patches;
 
+import betterMatch.BetterMatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.events.shrines.GremlinMatchGame;
@@ -11,8 +12,8 @@ import com.megacrit.cardcrawl.events.shrines.GremlinMatchGame;
 public class RemoveEventPatch {
 
     public static void Prefix(AbstractDungeon dungeon_instance) {
-        AbstractDungeon.eventList.remove(GremlinMatchGame.ID);
+        AbstractDungeon.shrineList.remove(GremlinMatchGame.ID);
 
-        //BetterStone.logger.info(AbstractDungeon.eventList + "\n\n");
+        BetterMatch.logger.info(AbstractDungeon.shrineList + "\n\n");
     }
 }

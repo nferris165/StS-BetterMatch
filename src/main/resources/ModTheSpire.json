@@ -1,6 +1,6 @@
 {
   "modid": "betterMatch",
-  "name": "Better Match and Keep",
+  "name": "Better Match",
   "author_list": ["Nichilas"],
   "description": "A Better Match and Keep.",
   "version": "${project.version}",

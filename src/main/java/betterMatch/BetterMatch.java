@@ -4,19 +4,22 @@ import basemod.BaseMod;
 import basemod.ModLabeledToggleButton;
 import basemod.ModPanel;
 import basemod.ReflectionHacks;
+import basemod.eventUtil.AddEventParams;
+import basemod.eventUtil.EventUtils;
 import basemod.interfaces.*;
 import betterMatch.events.BetterMatchEvent;
 import betterMatch.util.TextureLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.evacipated.cardcrawl.mod.stslib.Keyword;
-import com.evacipated.cardcrawl.modthespire.Loader;
 import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
+import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.Gson;
 import com.megacrit.cardcrawl.audio.Sfx;
 import com.megacrit.cardcrawl.audio.SoundMaster;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.localization.*;
 import org.apache.logging.log4j.LogManager;
@@ -26,6 +29,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Properties;
 
+@SuppressWarnings("unused")
+
+@SpireInitializer
 public class BetterMatch implements
         EditCardsSubscriber,
         EditRelicsSubscriber,
@@ -39,11 +45,7 @@ public class BetterMatch implements
     //mod settings
     public static Properties defaultSettings = new Properties();
     public static final String ascension_limit_settings = "ascensionLimit";
-    public static final String act_limit_settings = "actLimit";
     public static boolean disableAscLimit = false;
-    public static boolean actLimit = false;
-
-    public static final boolean hasBetterNote;
 
     private static final String MODNAME = "Better Match";
     private static final String AUTHOR = "Nichilas";
@@ -99,22 +101,12 @@ public class BetterMatch implements
 
         logger.info("Adding mod settings");
         defaultSettings.setProperty(ascension_limit_settings, "FALSE");
-        defaultSettings.setProperty(act_limit_settings, "FALSE");
         try {
             SpireConfig config = new SpireConfig("betterMatch", "betterMatchConfig", defaultSettings);
             config.load();
             disableAscLimit = config.getBool(ascension_limit_settings);
-            actLimit = config.getBool(act_limit_settings);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    static
-    {
-        hasBetterNote = Loader.isModLoaded("betterNote");
-        if (hasBetterNote) {
-            logger.info("Detected Better Note");
         }
     }
 
@@ -212,7 +204,10 @@ public class BetterMatch implements
         BaseMod.registerModBadge(badgeTexture, MODNAME, AUTHOR, DESCRIPTION, settingsPanel);
 
         //events
-        BaseMod.addEvent(BetterMatchEvent.ID, BetterMatchEvent.class);
+        //BaseMod.addEvent(BetterMatchEvent.ID, BetterMatchEvent.class);
+        //BaseMod.addEvent(new AddEventParams.Builder(BetterMatchEvent.ID, BetterMatchEvent.class).eventType(EventUtils.EventType.SHRINE).bonusCondition(new EventCondition()).create());
+        BaseMod.addEvent(new AddEventParams.Builder(BetterMatchEvent.ID, BetterMatchEvent.class)
+                .eventType(EventUtils.EventType.SHRINE).bonusCondition(() -> AbstractDungeon.player.gold > 100).create());
 
         //audio
         loadAudio();

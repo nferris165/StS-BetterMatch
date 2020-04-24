@@ -9,7 +9,7 @@ import com.megacrit.cardcrawl.localization.EventStrings;
 
 public class BetterMatchEvent extends AbstractImageEvent {
 
-    public static final String ID = BetterMatch.makeID("BetterMatchEvent");
+    public static final String ID = BetterMatch.makeID("BetterMatch");
     private static final EventStrings eventStrings = CardCrawlGame.languagePack.getEventString(ID);
 
     private static final String NAME = eventStrings.NAME;
