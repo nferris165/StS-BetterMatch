@@ -36,25 +36,22 @@ public class BetterMatchEvent extends AbstractImageEvent {
     private boolean cardFlipped = false;
     private boolean gameDone = false;
     private boolean cleanUpCalled = false;
-    private int attemptCount = 5;
+    private int attemptCount;
     private CardGroup cards;
     private float waitTimer;
-    private int cardsMatched;
     private CUR_SCREEN screen;
     private static final String MSG_2;
     private static final String MSG_3;
-    private List<String> matchedCards;
+    private static final String GAME_MSG;
 
     public BetterMatchEvent() {
         super(NAME, DESCRIPTIONS[2], IMG);
         this.cards = new CardGroup(CardGroup.CardGroupType.UNSPECIFIED);
         this.waitTimer = 0.0F;
-        this.cardsMatched = 0;
         this.screen = CUR_SCREEN.INTRO;
         this.cards.group = this.initializeCards();
         Collections.shuffle(this.cards.group, new Random(AbstractDungeon.miscRng.randomLong()));
         this.imageEventText.setDialogOption(OPTIONS[0]);
-        this.matchedCards = new ArrayList<>();
     }
 
     private ArrayList<AbstractCard> initializeCards() {
@@ -90,6 +87,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
         return retVal;
     }
 
+    @Override
     public void update() {
         super.update();
         this.cards.update();
@@ -192,70 +190,69 @@ public class BetterMatchEvent extends AbstractImageEvent {
     }
 
     private void updateMatchGameLogic() {
-        if (this.waitTimer == 0.0F) {// 198
-            this.hoveredCard = null;// 199
+        if (this.waitTimer == 0.0F) {
+            this.hoveredCard = null;
 
             for (AbstractCard c : this.cards.group) {
-                c.hb.update();// 201
-                if (this.hoveredCard == null && c.hb.hovered) {// 202
-                    c.drawScale = 0.7F;// 203
-                    c.targetDrawScale = 0.7F;// 204
-                    this.hoveredCard = c;// 205
-                    if (InputHelper.justClickedLeft && this.hoveredCard.isFlipped) {// 206
-                        InputHelper.justClickedLeft = false;// 207
-                        this.hoveredCard.isFlipped = false;// 208
-                        if (!this.cardFlipped) {// 209
-                            this.cardFlipped = true;// 210
-                            this.chosenCard = this.hoveredCard;// 211
+                c.hb.update();
+                if (this.hoveredCard == null && c.hb.hovered) {
+                    c.drawScale = 0.7F;
+                    c.targetDrawScale = 0.7F;
+                    this.hoveredCard = c;
+                    if (InputHelper.justClickedLeft && this.hoveredCard.isFlipped) {
+                        InputHelper.justClickedLeft = false;
+                        this.hoveredCard.isFlipped = false;
+                        if (!this.cardFlipped) {
+                            this.cardFlipped = true;
+                            this.chosenCard = this.hoveredCard;
                         } else {
-                            this.cardFlipped = false;// 213
-                            if (this.chosenCard.cardID.equals(this.hoveredCard.cardID)) {// 214
-                                this.waitTimer = 1.0F;// 215
-                                this.chosenCard.targetDrawScale = 0.7F;// 216
-                                this.chosenCard.target_x = (float) Settings.WIDTH / 2.0F;// 217
-                                this.chosenCard.target_y = (float) Settings.HEIGHT / 2.0F;// 218
-                                this.hoveredCard.targetDrawScale = 0.7F;// 219
-                                this.hoveredCard.target_x = (float) Settings.WIDTH / 2.0F;// 220
-                                this.hoveredCard.target_y = (float) Settings.HEIGHT / 2.0F;// 221
+                            this.cardFlipped = false;
+                            if (this.chosenCard.cardID.equals(this.hoveredCard.cardID)) {
+                                this.waitTimer = 1.0F;
+                                this.chosenCard.targetDrawScale = 0.7F;
+                                this.chosenCard.target_x = (float) Settings.WIDTH / 2.0F;
+                                this.chosenCard.target_y = (float) Settings.HEIGHT / 2.0F;
+                                this.hoveredCard.targetDrawScale = 0.7F;
+                                this.hoveredCard.target_x = (float) Settings.WIDTH / 2.0F;
+                                this.hoveredCard.target_y = (float) Settings.HEIGHT / 2.0F;
                             } else {
-                                this.waitTimer = 1.25F;// 223
-                                this.chosenCard.targetDrawScale = 1.0F;// 224
-                                this.hoveredCard.targetDrawScale = 1.0F;// 225
+                                this.waitTimer = 1.25F;
+                                this.chosenCard.targetDrawScale = 1.0F;
+                                this.hoveredCard.targetDrawScale = 1.0F;
                             }
                         }
                     }
-                } else if (c != this.chosenCard) {// 230
-                    c.targetDrawScale = 0.5F;// 231
+                } else if (c != this.chosenCard) {
+                    c.targetDrawScale = 0.5F;
                 }
             }
         } else {
-            this.waitTimer -= Gdx.graphics.getDeltaTime();// 236
-            if (this.waitTimer < 0.0F && !this.gameDone) {// 237
-                this.waitTimer = 0.0F;// 238
-                if (this.chosenCard.cardID.equals(this.hoveredCard.cardID)) {// 241
-                    ++this.cardsMatched;// 242
-                    this.cards.group.remove(this.chosenCard);// 243
-                    this.cards.group.remove(this.hoveredCard);// 244
-                    this.matchedCards.add(this.chosenCard.cardID);// 245
-                    AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(this.chosenCard.makeCopy(), (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));// 246 247
-                    this.chosenCard = null;// 248
-                    this.hoveredCard = null;// 249
+            this.waitTimer -= Gdx.graphics.getDeltaTime();
+            if (this.waitTimer < 0.0F && !this.gameDone) {
+                this.waitTimer = 0.0F;
+                if (this.chosenCard.cardID.equals(this.hoveredCard.cardID)) {
+                    //++this.cardsMatched;
+                    this.cards.group.remove(this.chosenCard);
+                    this.cards.group.remove(this.hoveredCard);
+                    AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(this.chosenCard.makeCopy(), (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
+                    this.chosenCard = null;
+                    this.hoveredCard = null;
                 } else {
-                    this.chosenCard.isFlipped = true;// 251
-                    this.hoveredCard.isFlipped = true;// 252
-                    this.chosenCard.targetDrawScale = 0.5F;// 253
-                    this.hoveredCard.targetDrawScale = 0.5F;// 254
-                    this.chosenCard = null;// 255
-                    this.hoveredCard = null;// 256
+                    this.chosenCard.isFlipped = true;
+                    this.hoveredCard.isFlipped = true;
+                    this.chosenCard.targetDrawScale = 0.5F;
+                    this.hoveredCard.targetDrawScale = 0.5F;
+                    this.chosenCard = null;
+                    this.hoveredCard = null;
                 }
 
-                --this.attemptCount;// 258
-                if (this.attemptCount == 0) {// 259
-                    this.gameDone = true;// 260
-                    this.waitTimer = 1.0F;// 261
+                --this.attemptCount;
+                if (this.attemptCount == 0) {
+                    this.gameDone = true;
+                    this.waitTimer = 1.0F;
                 }
-            } else if (this.gameDone) {// 263
-                this.screen = CUR_SCREEN.CLEAN_UP;// 265
+            } else if (this.gameDone) {
+                this.screen = CUR_SCREEN.CLEAN_UP;
             }
         }
 
@@ -263,57 +260,76 @@ public class BetterMatchEvent extends AbstractImageEvent {
 
     @Override
     protected void buttonEffect(int buttonPressed) {
-        switch(this.screen) {// 277
+        switch(this.screen) {
             case INTRO:
-                switch(buttonPressed) {// 279
+                switch(buttonPressed) {
                     case 0:
-                        this.imageEventText.updateBodyText(MSG_2);// 281
-                        this.imageEventText.updateDialogOption(0, OPTIONS[2]);// 282
-                        this.screen = CUR_SCREEN.RULE_EXPLANATION;// 283
-                        return;// 306
+                        this.imageEventText.updateBodyText(MSG_2);
+                        this.imageEventText.updateDialogOption(0, OPTIONS[2]);
+                        this.imageEventText.setDialogOption(OPTIONS[2]);
+                        this.imageEventText.setDialogOption(OPTIONS[2]);
+                        this.screen = CUR_SCREEN.RULE_EXPLANATION;
+                        return;
                     default:
                         return;
                 }
             case RULE_EXPLANATION:
-                switch(buttonPressed) {// 289
+                switch(buttonPressed) {
                     case 0:
-                        this.imageEventText.removeDialogOption(0);// 291
-                        GenericEventDialog.hide();// 292
-                        this.screen = CUR_SCREEN.PLAY;// 293
-                        this.placeCards();// 294
+                        this.imageEventText.clearAllDialogs();
+                        GenericEventDialog.hide();
+                        this.screen = CUR_SCREEN.PLAY;
+                        this.attemptCount = 5;
+                        this.placeCards();
+                        return;
+                    case 1:
+                        this.imageEventText.clearAllDialogs();
+                        GenericEventDialog.hide();
+                        this.screen = CUR_SCREEN.PLAY;
+                        this.attemptCount = 3;
+                        this.placeCards();
+                        return;
+                    case 2:
+                        this.imageEventText.clearAllDialogs();
+                        GenericEventDialog.hide();
+                        this.screen = CUR_SCREEN.PLAY;
+                        this.attemptCount = 1;
+                        this.placeCards();
                         return;
                     default:
                         return;
                 }
             case COMPLETE:
-                logMetricObtainCards("Match and Keep!", this.cardsMatched + " cards matched", this.matchedCards);// 300
-                this.openMap();// 301
+                this.openMap();
         }
 
     }
 
     private void placeCards() {
-        for(int i = 0; i < this.cards.size(); ++i) {// 309
-            (this.cards.group.get(i)).target_x = (float)(i % 4) * 210.0F * Settings.scale + 640.0F * Settings.scale;// 310
-            (this.cards.group.get(i)).target_y = (float)(i % 3) * -230.0F * Settings.scale + 750.0F * Settings.scale;// 311
-            (this.cards.group.get(i)).targetDrawScale = 0.5F;// 312
-            (this.cards.group.get(i)).isFlipped = true;// 313
+        for(int i = 0; i < this.cards.size(); ++i) {
+            (this.cards.group.get(i)).target_x = (float)(i % 4) * 210.0F * Settings.scale + 640.0F * Settings.scale;
+            (this.cards.group.get(i)).target_y = (float)(i % 3) * -230.0F * Settings.scale + 750.0F * Settings.scale;
+            (this.cards.group.get(i)).targetDrawScale = 0.5F;
+            (this.cards.group.get(i)).isFlipped = true;
         }
 
     }
 
+    @Override
     public void render(SpriteBatch sb) {
-        this.cards.render(sb);// 319
-        if (this.chosenCard != null) {// 320
-            this.chosenCard.render(sb);// 321
+        this.cards.render(sb);
+        if (this.chosenCard != null) {
+            this.chosenCard.render(sb);
         }
 
-        if (this.hoveredCard != null) {// 323
-            this.hoveredCard.render(sb);// 324
+        if (this.hoveredCard != null) {
+            this.hoveredCard.render(sb);
         }
 
-        if (this.screen == CUR_SCREEN.PLAY) {// 327
-            FontHelper.renderSmartText(sb, FontHelper.panelNameFont, OPTIONS[3] + this.attemptCount, 780.0F * Settings.scale, 80.0F * Settings.scale, 2000.0F * Settings.scale, 0.0F, Color.WHITE);// 328
+        if (this.screen == CUR_SCREEN.PLAY) {
+            FontHelper.renderSmartText(sb, FontHelper.panelNameFont,
+                    GAME_MSG + this.attemptCount, 780.0F * Settings.scale, 80.0F * Settings.scale,
+                    2000.0F * Settings.scale, 0.0F, Color.WHITE);
         }
 
     }
@@ -321,6 +337,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
     static {
         MSG_2 = DESCRIPTIONS[0];
         MSG_3 = DESCRIPTIONS[1];
+        GAME_MSG = OPTIONS[3];
     }
 
     private enum CUR_SCREEN {
