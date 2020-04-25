@@ -22,7 +22,6 @@ import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.rewards.RewardItem;
-import com.megacrit.cardcrawl.vfx.cardManip.ShowCardAndObtainEffect;
 
 import java.util.*;
 
@@ -43,18 +42,20 @@ public class BetterMatchEvent extends AbstractImageEvent {
     private boolean gameDone = false;
     private boolean cleanUpCalled = false;
     private boolean free;
-    private int attemptCount, cost;
+    private int attemptCount, cost, cardsMatched;
     private CardGroup cards;
     private float waitTimer;
     private CUR_SCREEN screen;
     private static final String MSG_2;
     private static final String MSG_3;
     private static final String GAME_MSG;
+    private HashMap<Integer, String> map = new HashMap<>();
 
     public BetterMatchEvent() {
         super(NAME, DESCRIPTIONS[2], IMG);
         this.cards = new CardGroup(CardGroup.CardGroupType.UNSPECIFIED);
         this.waitTimer = 0.0F;
+        this.cardsMatched = 0;
         this.screen = CUR_SCREEN.INTRO;
         float roll = AbstractDungeon.eventRng.random(0.0F, 1.0F);
         this.free = roll < 0.075F;
@@ -117,7 +118,6 @@ public class BetterMatchEvent extends AbstractImageEvent {
         retVal.add(new CommonCard());
         retVal.add(new DramaticEntrance());
 
-        //retVal.add(AbstractDungeon.player.getStartCardForEvent());
         for(AbstractCard c: retVal){
             for (AbstractRelic r : AbstractDungeon.player.relics) {
                 r.onPreviewObtainCard(c);
@@ -235,7 +235,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
     }
 
     private void cleanUpCards() {
-        setReward(1);
+        setReward();
         for(AbstractCard c : this.cards.group) {
             c.targetDrawScale = 0.5F;
             c.target_x = (float)Settings.WIDTH / 2.0F;
@@ -285,10 +285,10 @@ public class BetterMatchEvent extends AbstractImageEvent {
             if (this.waitTimer < 0.0F && !this.gameDone) {
                 this.waitTimer = 0.0F;
                 if (this.chosenCard.cardID.equals(this.hoveredCard.cardID)) {
-                    //++this.cardsMatched;
+                    map.put(this.cardsMatched, this.chosenCard.cardID);
+                    ++this.cardsMatched;
                     this.cards.group.remove(this.chosenCard);
                     this.cards.group.remove(this.hoveredCard);
-                    //AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(this.chosenCard.makeCopy(), (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
                     this.chosenCard = null;
                     this.hoveredCard = null;
                 } else {
@@ -369,12 +369,24 @@ public class BetterMatchEvent extends AbstractImageEvent {
 
     }
 
-    private void setReward(int num){
+    private void setReward(){
         AbstractDungeon.getCurrRoom().rewards.clear();
-        AbstractDungeon.combatRewardScreen.clear();
 
-        for(int i = 0; i < num; i++) {
-            AbstractDungeon.getCurrRoom().addCardReward(new RewardItem(AbstractCard.CardColor.COLORLESS));
+        for(int i = 0; i < cardsMatched; i++) {
+            switch (map.get(i)){
+                case "betterMatch:RareCard":
+                    AbstractDungeon.getCurrRoom().addCardReward(new RewardItem());
+                    break;
+                case "betterMatch:UncommonCard":
+                    AbstractDungeon.getCurrRoom().addCardReward(new RewardItem());
+                    break;
+                case "betterMatch:CommonCard":
+                    AbstractDungeon.getCurrRoom().addCardReward(new RewardItem());
+                    break;
+                default:
+                    AbstractDungeon.getCurrRoom().addCardReward(new RewardItem(AbstractCard.CardColor.COLORLESS));
+                    break;
+            }
         }
     }
 
