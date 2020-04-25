@@ -1,6 +1,7 @@
 package betterMatch.cards;
 
 import betterMatch.BetterMatch;
+import betterMatch.patches.customTags;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 
@@ -21,6 +22,8 @@ public class RareCard extends AbstractCustomCard {
 
     public RareCard() {
         super(ID, IMG, COST, TYPE, COLOR, RARITY, TARGET);
+
+        tags.add(customTags.Display);
     }
 
 

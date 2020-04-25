@@ -4,15 +4,13 @@ import betterMatch.BetterMatch;
 import betterMatch.cards.CommonCard;
 import betterMatch.cards.RareCard;
 import betterMatch.cards.UncommonCard;
+import betterMatch.patches.customTags;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardGroup;
 import com.megacrit.cardcrawl.cards.colorless.DramaticEntrance;
-import com.megacrit.cardcrawl.cards.red.FiendFire;
-import com.megacrit.cardcrawl.cards.red.Hemokinesis;
-import com.megacrit.cardcrawl.cards.red.IronWave;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -24,7 +22,6 @@ import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.rewards.RewardItem;
-import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.vfx.cardManip.ShowCardAndObtainEffect;
 
 import java.util.*;
@@ -64,6 +61,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
         this.cards.group = this.initializeCards();
         Collections.shuffle(this.cards.group, new Random(AbstractDungeon.miscRng.randomLong()));
         this.imageEventText.setDialogOption(OPTIONS[0]);
+        this.noCardsInRewards = true;
 
         //BetterMatch.logger.info(roll + "\n");
 
@@ -81,22 +79,29 @@ public class BetterMatchEvent extends AbstractImageEvent {
     }
 
     private void stripCard(AbstractCard card){
-        switch (card.rarity){
-            case RARE:
-                break;
-            case UNCOMMON:
-                card.assetUrl = BetterMatch.makeCardPath("uncommon.png");
-                card.portrait = null;
-                break;
-            case COMMON:
-                card.assetUrl = BetterMatch.makeCardPath("common.png");
-                card.portrait = null;
-                break;
+        if(!card.hasTag(customTags.Display)) {
+            switch (card.rarity) {
+                case RARE:
+                    card.assetUrl = BetterMatch.makeCardPath("rare.png");
+                    card.portrait = null;
+                    break;
+                case UNCOMMON:
+                    card.assetUrl = BetterMatch.makeCardPath("uncommon.png");
+                    card.portrait = null;
+                    break;
+                case COMMON:
+                    card.assetUrl = BetterMatch.makeCardPath("common.png");
+                    card.portrait = null;
+                    break;
+            }
+            card.name = "Colorless Prize!";
+            card.rawDescription = "Win your choice of a colorless card";
+            card.cost = -2;
+            card.initializeDescription();
         }
-        card.name = card.rarity.toString() + " Prize";
-        card.rawDescription = "Win your choice of a card of rarity: \n" + card.rarity.toString();
-        card.cost = -2;
-        card.initializeDescription();
+        else{
+            card.color = AbstractDungeon.player.getCardColor();
+        }
 
     }
 
@@ -283,7 +288,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
                     //++this.cardsMatched;
                     this.cards.group.remove(this.chosenCard);
                     this.cards.group.remove(this.hoveredCard);
-                    AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(this.chosenCard.makeCopy(), (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
+                    //AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(this.chosenCard.makeCopy(), (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
                     this.chosenCard = null;
                     this.hoveredCard = null;
                 } else {

@@ -1,6 +1,7 @@
 package betterMatch.cards;
 
 import betterMatch.BetterMatch;
+import betterMatch.patches.customTags;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 
@@ -8,7 +9,7 @@ import static betterMatch.BetterMatch.makeCardPath;
 
 public class CommonCard extends AbstractCustomCard {
 
-    public static final String ID = BetterMatch.makeID(RareCard.class.getSimpleName());
+    public static final String ID = BetterMatch.makeID(CommonCard.class.getSimpleName());
 
     public static final String IMG = makeCardPath("common.png");
 
@@ -21,6 +22,8 @@ public class CommonCard extends AbstractCustomCard {
 
     public CommonCard() {
         super(ID, IMG, COST, TYPE, COLOR, RARITY, TARGET);
+
+        tags.add(customTags.Display);
     }
 
 
