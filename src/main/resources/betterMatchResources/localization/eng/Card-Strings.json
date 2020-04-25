@@ -1,3 +1,23 @@
 {
-
+  "betterMatch:RareCard": {
+    "NAME": "Rare Prize!",
+    "DESCRIPTION": "Match this card to win a choice of Rare cards!",
+    "EXTENDED_DESCRIPTION": [
+      "I can't play this card."
+    ]
+  },
+  "betterMatch:UncommonCard": {
+    "NAME": "Uncommon Prize!",
+    "DESCRIPTION": "Match this card to win a choice of Uncommon cards!",
+    "EXTENDED_DESCRIPTION": [
+      "I can't play this card."
+    ]
+  },
+  "betterMatch:CommonCard": {
+    "NAME": "Common Prize!",
+    "DESCRIPTION": "Match this card to win a choice of Common cards!",
+    "EXTENDED_DESCRIPTION": [
+      "I can't play this card."
+    ]
+  }
 }

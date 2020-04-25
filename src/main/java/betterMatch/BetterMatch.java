@@ -7,10 +7,14 @@ import basemod.ReflectionHacks;
 import basemod.eventUtil.AddEventParams;
 import basemod.eventUtil.EventUtils;
 import basemod.interfaces.*;
+import betterMatch.cards.CommonCard;
+import betterMatch.cards.RareCard;
+import betterMatch.cards.UncommonCard;
 import betterMatch.events.BetterMatchEvent;
 import betterMatch.util.TextureLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.compression.lzma.Base;
 import com.evacipated.cardcrawl.mod.stslib.Keyword;
 import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
@@ -120,6 +124,10 @@ public class BetterMatch implements
 
     @Override
     public void receiveEditCards() {
+
+        BaseMod.addCard(new RareCard());
+        BaseMod.addCard(new UncommonCard());
+        BaseMod.addCard(new CommonCard());
 
     }
 
