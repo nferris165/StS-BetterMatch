@@ -36,7 +36,8 @@ public class BetterMatchEvent extends AbstractImageEvent {
     private boolean cardFlipped = false;
     private boolean gameDone = false;
     private boolean cleanUpCalled = false;
-    private int attemptCount;
+    private boolean free;
+    private int attemptCount, cost;
     private CardGroup cards;
     private float waitTimer;
     private CUR_SCREEN screen;
@@ -49,9 +50,25 @@ public class BetterMatchEvent extends AbstractImageEvent {
         this.cards = new CardGroup(CardGroup.CardGroupType.UNSPECIFIED);
         this.waitTimer = 0.0F;
         this.screen = CUR_SCREEN.INTRO;
+        float roll = AbstractDungeon.eventRng.random(0.0F, 1.0F);
+        this.free = roll < 0.075F;
         this.cards.group = this.initializeCards();
         Collections.shuffle(this.cards.group, new Random(AbstractDungeon.miscRng.randomLong()));
         this.imageEventText.setDialogOption(OPTIONS[0]);
+
+        //BetterMatch.logger.info(roll + "\n");
+
+        if(AbstractDungeon.ascensionLevel >= 15){
+            this.cost = 150;
+        }
+        else{
+            this.cost = 100;
+        }
+
+        if(free){
+            this.body = DESCRIPTIONS[3];
+            this.cost = 0;
+        }
     }
 
     private ArrayList<AbstractCard> initializeCards() {
@@ -264,10 +281,14 @@ public class BetterMatchEvent extends AbstractImageEvent {
             case INTRO:
                 switch(buttonPressed) {
                     case 0:
-                        this.imageEventText.updateBodyText(MSG_2);
-                        this.imageEventText.updateDialogOption(0, OPTIONS[2]);
-                        this.imageEventText.setDialogOption(OPTIONS[2]);
-                        this.imageEventText.setDialogOption(OPTIONS[2]);
+                        if(free){
+                            this.imageEventText.updateBodyText(DESCRIPTIONS[4]);
+                        } else {
+                            this.imageEventText.updateBodyText(MSG_2);
+                        }
+                        this.imageEventText.updateDialogOption(0, OPTIONS[2] + cost + OPTIONS[4]);
+                        this.imageEventText.setDialogOption(OPTIONS[2] + cost + OPTIONS[5]);
+                        this.imageEventText.setDialogOption(OPTIONS[2] + cost + OPTIONS[6]);
                         this.screen = CUR_SCREEN.RULE_EXPLANATION;
                         return;
                     default:
@@ -276,6 +297,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
             case RULE_EXPLANATION:
                 switch(buttonPressed) {
                     case 0:
+                        AbstractDungeon.player.loseGold(cost);
                         this.imageEventText.clearAllDialogs();
                         GenericEventDialog.hide();
                         this.screen = CUR_SCREEN.PLAY;
@@ -283,6 +305,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
                         this.placeCards();
                         return;
                     case 1:
+                        AbstractDungeon.player.loseGold(cost);
                         this.imageEventText.clearAllDialogs();
                         GenericEventDialog.hide();
                         this.screen = CUR_SCREEN.PLAY;
@@ -290,6 +313,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
                         this.placeCards();
                         return;
                     case 2:
+                        AbstractDungeon.player.loseGold(cost);
                         this.imageEventText.clearAllDialogs();
                         GenericEventDialog.hide();
                         this.screen = CUR_SCREEN.PLAY;

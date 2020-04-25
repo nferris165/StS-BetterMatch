@@ -2,15 +2,20 @@
   "betterMatch:BetterMatch": {
     "NAME": "Better Match and Keep",
     "DESCRIPTIONS": [
-      "\" #bTwelve cards! Match them to keep them! #bFive tries, no do-overs. NL Are you ready? Let's start!\"",
+      "\" #bTwelve cards! Match them to keep them! Limited tries; no do-overs. NL Are you ready? Let's start!\"",
       "You complete the gremlin's game and look up. NL He disappeared?",
-      "A gremlin is madly shuffling cards on a table. This monster seems to be a harmless one. You approach him out of curiosity."
+      "A gremlin is madly shuffling cards on a table. This monster seems to be a harmless one. You approach him out of curiosity.",
+      "A gremlin is madly shuffling cards on a table. This monster seems to be a harmless one. You approach him out of curiosity. NL NL You notice he has a #ydevilish #ysmile upon his face...",
+      "\" #bTwelve cards! Match them to keep them! Limited tries; no do-overs. NL And since you're the #b100th customer, I'll let you play for free. NL NL Are you ready? Let's start!\""
     ],
     "OPTIONS": [
       "[Continue]",
       "[Leave]",
-      "[Play]",
-      "Remaining Attempts: #y"
+      "[Play] #yBet #y",
+      "Remaining Attempts: #y",
+      " #ygold. #bFive tries.",
+      " #ygold. #bThree tries. #gRewards #gare #gupgraded.",
+      " #ygold. #bOne try. #gTriple #grewards. #gRewards #gare #gupgraded."
     ]
   }
 }
