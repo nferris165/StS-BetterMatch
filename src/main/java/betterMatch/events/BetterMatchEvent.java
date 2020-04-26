@@ -1,5 +1,6 @@
 package betterMatch.events;
 
+import basemod.BaseMod;
 import betterMatch.BetterMatch;
 import betterMatch.cards.*;
 import betterMatch.patches.customTags;
@@ -75,6 +76,14 @@ public class BetterMatchEvent extends AbstractImageEvent {
             this.body = DESCRIPTIONS[3];
             this.cost = 0;
         }
+
+        /*
+        BaseMod.addCard(new RareCard());
+        BaseMod.addCard(new UncommonCard());
+        BaseMod.addCard(new CommonCard());
+        BaseMod.addCard(new ColorlessRareCard());
+        BaseMod.addCard(new ColorlessUncommonCard());
+        */
     }
 
     private void stripCard(AbstractCard card){
@@ -111,11 +120,11 @@ public class BetterMatchEvent extends AbstractImageEvent {
         ArrayList<AbstractCard> retValCopy = new ArrayList<>();
 
         // Card Pool
-        retVal.add(new RareCard());
-        retVal.add(new UncommonCard());
-        retVal.add(new UncommonCard());
-        retVal.add(new CommonCard());
-        retVal.add(new CommonCard());
+        retVal.add(new RareCard(AbstractDungeon.player.getCardColor()));
+        retVal.add(new UncommonCard(AbstractDungeon.player.getCardColor()));
+        retVal.add(new UncommonCard(AbstractDungeon.player.getCardColor()));
+        retVal.add(new CommonCard(AbstractDungeon.player.getCardColor()));
+        retVal.add(new CommonCard(AbstractDungeon.player.getCardColor()));
         if(AbstractDungeon.miscRng.random(0.0F, 1.0F) < 0.3F){
             retVal.add(new ColorlessRareCard());
         }
@@ -403,6 +412,13 @@ public class BetterMatchEvent extends AbstractImageEvent {
 
     private void getReward() {
         AbstractDungeon.combatRewardScreen.open();
+        /*
+        BaseMod.removeCard(RareCard.ID, AbstractCard.CardColor.COLORLESS);
+        BaseMod.removeCard(UncommonCard.ID, AbstractCard.CardColor.COLORLESS);
+        BaseMod.removeCard(CommonCard.ID, AbstractCard.CardColor.COLORLESS);
+        BaseMod.removeCard(ColorlessRareCard.ID, AbstractCard.CardColor.COLORLESS);
+        BaseMod.removeCard(ColorlessUncommonCard.ID, AbstractCard.CardColor.COLORLESS);
+        */
     }
 
     private void placeCards() {

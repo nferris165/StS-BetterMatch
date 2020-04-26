@@ -16,7 +16,7 @@ public class CommonCard extends AbstractCustomCard {
     private static final CardRarity RARITY = CardRarity.COMMON;
     private static final CardTarget TARGET = CardTarget.ALL;
     private static final CardType TYPE = CardType.ATTACK;
-    public static final CardColor COLOR = CardColor.RED;
+    public static final CardColor COLOR = CardColor.COLORLESS;
 
     private static final int COST = -2;
 
@@ -26,11 +26,15 @@ public class CommonCard extends AbstractCustomCard {
         tags.add(customTags.Display);
     }
 
+    public CommonCard(CardColor color) {
+        super(ID, IMG, COST, TYPE, color, RARITY, TARGET);
+
+        tags.add(customTags.Display);
+    }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
     }
-
 
     @Override
     public void upgrade() {

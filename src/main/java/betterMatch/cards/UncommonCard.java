@@ -16,12 +16,18 @@ public class UncommonCard extends AbstractCustomCard {
     private static final CardRarity RARITY = CardRarity.UNCOMMON;
     private static final CardTarget TARGET = CardTarget.ALL;
     private static final CardType TYPE = CardType.ATTACK;
-    public static final CardColor COLOR = CardColor.RED;
+    public static final CardColor COLOR = CardColor.COLORLESS;
 
     private static final int COST = -2;
 
     public UncommonCard() {
         super(ID, IMG, COST, TYPE, COLOR, RARITY, TARGET);
+
+        tags.add(customTags.Display);
+    }
+
+    public UncommonCard(CardColor color) {
+        super(ID, IMG, COST, TYPE, color, RARITY, TARGET);
 
         tags.add(customTags.Display);
     }
