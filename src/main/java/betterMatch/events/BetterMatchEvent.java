@@ -435,77 +435,26 @@ public class BetterMatchEvent extends AbstractImageEvent {
         RewardItem reward = new RewardItem();
         reward.cards.clear();
         AbstractCard c;
-        for(int n = 0; n < size; n++){
-            if(color){
-                switch(rarity){
-                    case RARE:
-                        do{
-                            c = AbstractDungeon.getCard(AbstractCard.CardRarity.RARE);
-                        }while(dupeCheck(reward.cards, c));
-                        if(this.upgrade && c.canUpgrade() && !c.upgraded){
-                            c.upgrade();
-                        }
-                        reward.cards.add(c);
-                        break;
-                    case UNCOMMON:
-                        do{
-                            c = AbstractDungeon.getCard(AbstractCard.CardRarity.UNCOMMON);
-                        }while(dupeCheck(reward.cards, c));
-                        if(this.upgrade && c.canUpgrade() && !c.upgraded){
-                            c.upgrade();
-                        }
-                        reward.cards.add(c);
-                        break;
-                    case COMMON:
-                        do{
-                            c = AbstractDungeon.getCard(AbstractCard.CardRarity.COMMON);
-                        }while(dupeCheck(reward.cards, c));
-                        if(this.upgrade && c.canUpgrade() && !c.upgraded){
-                            c.upgrade();
-                        }
-                        reward.cards.add(c);
-                        break;
-                    default:
-                        do{
-                            c = AbstractDungeon.returnRandomCard();
-                        }while(dupeCheck(reward.cards, c));
-                        if(this.upgrade && c.canUpgrade() && !c.upgraded){
-                            c.upgrade();
-                        }
-                        reward.cards.add(c);
-                        break;
+        if(color){
+            for(int n = 0; n < size; n++) {
+                do {
+                    c = AbstractDungeon.getCard(rarity);
+                } while (dupeCheck(reward.cards, c));
+                if (this.upgrade && c.canUpgrade() && !c.upgraded) {
+                    c.upgrade();
                 }
+                reward.cards.add(c);
             }
-            else{
-                switch(rarity){
-                    case RARE:
-                        do{
-                            c = AbstractDungeon.getColorlessCardFromPool(AbstractCard.CardRarity.RARE);
-                        }while(dupeCheck(reward.cards, c));
-                        if(this.upgrade && c.canUpgrade() && !c.upgraded){
-                            c.upgrade();
-                        }
-                        reward.cards.add(c);
-                        break;
-                    case UNCOMMON:
-                        do{
-                            c = AbstractDungeon.getColorlessCardFromPool(AbstractCard.CardRarity.UNCOMMON);
-                        }while(dupeCheck(reward.cards, c));
-                        if(this.upgrade && c.canUpgrade() && !c.upgraded){
-                            c.upgrade();
-                        }
-                        reward.cards.add(c);
-                        break;
-                    default:
-                        do{
-                            c = AbstractDungeon.returnColorlessCard();
-                        }while(dupeCheck(reward.cards, c));
-                        if(this.upgrade && c.canUpgrade() && !c.upgraded){
-                            c.upgrade();
-                        }
-                        reward.cards.add(c);
-                        break;
+        }
+        else{
+            for(int n = 0; n < size; n++) {
+                do {
+                    c = AbstractDungeon.getColorlessCardFromPool(rarity);
+                } while (dupeCheck(reward.cards, c));
+                if (this.upgrade && c.canUpgrade() && !c.upgraded) {
+                    c.upgrade();
                 }
+                reward.cards.add(c);
             }
         }
         return reward;
