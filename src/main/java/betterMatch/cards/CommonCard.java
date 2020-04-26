@@ -13,7 +13,7 @@ public class CommonCard extends AbstractCustomCard {
 
     public static final String IMG = makeCardPath("common.png");
 
-    private static final CardRarity RARITY = CardRarity.COMMON;
+    private static final CardRarity RARITY = CardRarity.SPECIAL;
     private static final CardTarget TARGET = CardTarget.ALL;
     private static final CardType TYPE = CardType.ATTACK;
     public static final CardColor COLOR = CardColor.COLORLESS;
@@ -26,8 +26,8 @@ public class CommonCard extends AbstractCustomCard {
         tags.add(customTags.Display);
     }
 
-    public CommonCard(CardColor color) {
-        super(ID, IMG, COST, TYPE, color, RARITY, TARGET);
+    public CommonCard(CardColor color, CardRarity rarity) {
+        super(ID, IMG, COST, TYPE, color, rarity, TARGET);
 
         tags.add(customTags.Display);
     }

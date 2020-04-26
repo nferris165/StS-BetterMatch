@@ -13,7 +13,7 @@ public class ColorlessRareCard extends AbstractCustomCard{
 
     public static final String IMG = makeCardPath("rare.png");
 
-    private static final CardRarity RARITY = CardRarity.RARE;
+    private static final CardRarity RARITY = CardRarity.SPECIAL;
     private static final CardTarget TARGET = CardTarget.ALL;
     private static final CardType TYPE = CardType.ATTACK;
     public static final CardColor COLOR = CardColor.COLORLESS;
@@ -22,6 +22,12 @@ public class ColorlessRareCard extends AbstractCustomCard{
 
     public ColorlessRareCard() {
         super(ID, IMG, COST, TYPE, COLOR, RARITY, TARGET);
+
+        tags.add(customTags.Display);
+    }
+
+    public ColorlessRareCard(CardRarity rarity) {
+        super(ID, IMG, COST, TYPE, COLOR, rarity, TARGET);
 
         tags.add(customTags.Display);
     }
