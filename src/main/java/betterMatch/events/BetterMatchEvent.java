@@ -1,6 +1,5 @@
 package betterMatch.events;
 
-import basemod.BaseMod;
 import betterMatch.BetterMatch;
 import betterMatch.cards.*;
 import betterMatch.patches.customTags;
@@ -9,7 +8,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardGroup;
-import com.megacrit.cardcrawl.cards.colorless.DramaticEntrance;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -40,8 +38,9 @@ public class BetterMatchEvent extends AbstractImageEvent {
     private boolean cardFlipped = false;
     private boolean gameDone = false;
     private boolean cleanUpCalled = false;
+    private boolean upgrade = false;
     private boolean free;
-    private int attemptCount, cost, cardsMatched;
+    private int attemptCount, cost, cardsMatched, rewardCount;
     private CardGroup cards;
     private float waitTimer;
     private CUR_SCREEN screen;
@@ -55,6 +54,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
         this.cards = new CardGroup(CardGroup.CardGroupType.UNSPECIFIED);
         this.waitTimer = 0.0F;
         this.cardsMatched = 0;
+        this.rewardCount = 1;
         this.screen = CUR_SCREEN.INTRO;
         float roll = AbstractDungeon.eventRng.random(0.0F, 1.0F);
         this.free = roll < 0.075F;
@@ -84,6 +84,11 @@ public class BetterMatchEvent extends AbstractImageEvent {
         BaseMod.addCard(new ColorlessRareCard());
         BaseMod.addCard(new ColorlessUncommonCard());
         */
+    }
+
+    @Override
+    public void onEnterRoom() {
+        AbstractDungeon.getCurrRoom().alterCardRarityProbabilities();
     }
 
     private void stripCard(AbstractCard card){
@@ -133,11 +138,11 @@ public class BetterMatchEvent extends AbstractImageEvent {
         }
 
         for(AbstractCard c: retVal){
-            for (AbstractRelic r : AbstractDungeon.player.relics) {
-                r.onPreviewObtainCard(c);
+            AbstractCard copy = c.makeStatEquivalentCopy();
+            if(c.color != AbstractCard.CardColor.COLORLESS){
+                copy.color = c.color;
             }
-
-            retValCopy.add(c.makeStatEquivalentCopy());
+            retValCopy.add(copy);
         }
 
         retVal.addAll(retValCopy);
@@ -276,6 +281,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
                         } else {
                             this.cardFlipped = false;
                             if (this.chosenCard.cardID.equals(this.hoveredCard.cardID)) {
+                                //BetterMatch.logger.info("Matched: " + this.chosenCard.cardID + "+" + this.hoveredCard.cardID +  "\n");
                                 this.waitTimer = 1.0F;
                                 this.chosenCard.targetDrawScale = 0.7F;
                                 this.chosenCard.target_x = (float) Settings.WIDTH / 2.0F;
@@ -361,6 +367,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
                         GenericEventDialog.hide();
                         this.screen = CUR_SCREEN.PLAY;
                         this.attemptCount = 3;
+                        this.upgrade = true;
                         this.placeCards();
                         return;
                     case 2:
@@ -369,6 +376,8 @@ public class BetterMatchEvent extends AbstractImageEvent {
                         GenericEventDialog.hide();
                         this.screen = CUR_SCREEN.PLAY;
                         this.attemptCount = 1;
+                        this.upgrade = true;
+                        this.rewardCount = 3;
                         this.placeCards();
                         return;
                     default:
@@ -385,33 +394,74 @@ public class BetterMatchEvent extends AbstractImageEvent {
 
     private void setReward(){
         AbstractDungeon.getCurrRoom().rewards.clear();
+        RewardItem reward = new RewardItem();
+        int size = reward.cards.size();
 
         for(int i = 0; i < cardsMatched; i++) {
             switch (map.get(i)){
                 case "betterMatch:RareCard":
-                    AbstractDungeon.getCurrRoom().addCardReward(new RewardItem());
+                    for(int j = 0; j < rewardCount; j++){
+                        RewardItem newRew = new RewardItem();
+                        newRew.cards.clear();
+                        for(int n = 0; n < size; n++){
+                            newRew.cards.add(AbstractDungeon.getCard(AbstractCard.CardRarity.RARE));
+                        }
+                        AbstractDungeon.getCurrRoom().addCardReward(newRew);
+                    }
                     break;
                 case "betterMatch:UncommonCard":
-                    AbstractDungeon.getCurrRoom().addCardReward(new RewardItem());
+                    for(int j = 0; j < rewardCount; j++){
+                        RewardItem newRew = new RewardItem();
+                        newRew.cards.clear();
+                        for(int n = 0; n < size; n++){
+                            newRew.cards.add(AbstractDungeon.getCard(AbstractCard.CardRarity.UNCOMMON));
+                        }
+                        AbstractDungeon.getCurrRoom().addCardReward(newRew);
+                    }
                     break;
                 case "betterMatch:CommonCard":
-                    AbstractDungeon.getCurrRoom().addCardReward(new RewardItem());
+                    for(int j = 0; j < rewardCount; j++){
+                        RewardItem newRew = new RewardItem();
+                        newRew.cards.clear();
+                        for(int n = 0; n < size; n++){
+                            newRew.cards.add(AbstractDungeon.getCard(AbstractCard.CardRarity.COMMON));
+                        }
+                        AbstractDungeon.getCurrRoom().addCardReward(newRew);
+                    }
                     break;
                 case "betterMatch:ColorlessRareCard":
-                    AbstractDungeon.getCurrRoom().addCardReward(new RewardItem(AbstractCard.CardColor.COLORLESS));
+                    for(int j = 0; j < rewardCount; j++){
+                        RewardItem newRew = new RewardItem();
+                        newRew.cards.clear();
+                        for(int n = 0; n < size; n++){
+                            newRew.cards.add(AbstractDungeon.getColorlessCardFromPool(AbstractCard.CardRarity.RARE));
+                        }
+                        AbstractDungeon.getCurrRoom().addCardReward(newRew);
+                    }
                     break;
                 case "betterMatch:ColorlessUncommonCard":
-                    AbstractDungeon.getCurrRoom().addCardReward(new RewardItem(AbstractCard.CardColor.COLORLESS));
+                    for(int j = 0; j < rewardCount; j++){
+                        RewardItem newRew = new RewardItem();
+                        newRew.cards.clear();
+                        for(int n = 0; n < size; n++){
+                            newRew.cards.add(AbstractDungeon.getColorlessCardFromPool(AbstractCard.CardRarity.UNCOMMON));
+                        }
+                        AbstractDungeon.getCurrRoom().addCardReward(newRew);
+                    }
                     break;
                 default:
-                    AbstractDungeon.getCurrRoom().addCardReward(new RewardItem());
+                    for(int j = 0; j < rewardCount; j++) {
+                        AbstractDungeon.getCurrRoom().addCardReward(reward);
+                    }
                     break;
             }
         }
     }
 
     private void getReward() {
-        AbstractDungeon.combatRewardScreen.open();
+        if(!AbstractDungeon.getCurrRoom().rewards.isEmpty()){
+            AbstractDungeon.combatRewardScreen.open();
+        }
         /*
         BaseMod.removeCard(RareCard.ID, AbstractCard.CardColor.COLORLESS);
         BaseMod.removeCard(UncommonCard.ID, AbstractCard.CardColor.COLORLESS);
@@ -426,7 +476,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
             (this.cards.group.get(i)).target_x = (float)(i % 4) * 210.0F * Settings.scale + 640.0F * Settings.scale;
             (this.cards.group.get(i)).target_y = (float)(i % 3) * -230.0F * Settings.scale + 750.0F * Settings.scale;
             (this.cards.group.get(i)).targetDrawScale = 0.5F;
-            (this.cards.group.get(i)).isFlipped = true;
+            //(this.cards.group.get(i)).isFlipped = true;
         }
 
     }
