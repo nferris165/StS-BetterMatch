@@ -434,38 +434,93 @@ public class BetterMatchEvent extends AbstractImageEvent {
     private RewardItem generateRewardItem(int size, AbstractCard.CardRarity rarity, boolean color){
         RewardItem reward = new RewardItem();
         reward.cards.clear();
+        AbstractCard c;
         for(int n = 0; n < size; n++){
             if(color){
                 switch(rarity){
                     case RARE:
-                        reward.cards.add(AbstractDungeon.getCard(AbstractCard.CardRarity.RARE));
+                        do{
+                            c = AbstractDungeon.getCard(AbstractCard.CardRarity.RARE);
+                        }while(dupeCheck(reward.cards, c));
+                        if(this.upgrade && c.canUpgrade() && !c.upgraded){
+                            c.upgrade();
+                        }
+                        reward.cards.add(c);
                         break;
                     case UNCOMMON:
-                        reward.cards.add(AbstractDungeon.getCard(AbstractCard.CardRarity.UNCOMMON));
+                        do{
+                            c = AbstractDungeon.getCard(AbstractCard.CardRarity.UNCOMMON);
+                        }while(dupeCheck(reward.cards, c));
+                        if(this.upgrade && c.canUpgrade() && !c.upgraded){
+                            c.upgrade();
+                        }
+                        reward.cards.add(c);
                         break;
                     case COMMON:
-                        reward.cards.add(AbstractDungeon.getCard(AbstractCard.CardRarity.COMMON));
+                        do{
+                            c = AbstractDungeon.getCard(AbstractCard.CardRarity.COMMON);
+                        }while(dupeCheck(reward.cards, c));
+                        if(this.upgrade && c.canUpgrade() && !c.upgraded){
+                            c.upgrade();
+                        }
+                        reward.cards.add(c);
                         break;
                     default:
-                        reward.cards.add(AbstractDungeon.returnRandomCard());
+                        do{
+                            c = AbstractDungeon.returnRandomCard();
+                        }while(dupeCheck(reward.cards, c));
+                        if(this.upgrade && c.canUpgrade() && !c.upgraded){
+                            c.upgrade();
+                        }
+                        reward.cards.add(c);
                         break;
                 }
             }
             else{
                 switch(rarity){
                     case RARE:
-                        reward.cards.add(AbstractDungeon.getColorlessCardFromPool(AbstractCard.CardRarity.RARE));
+                        do{
+                            c = AbstractDungeon.getColorlessCardFromPool(AbstractCard.CardRarity.RARE);
+                        }while(dupeCheck(reward.cards, c));
+                        if(this.upgrade && c.canUpgrade() && !c.upgraded){
+                            c.upgrade();
+                        }
+                        reward.cards.add(c);
                         break;
                     case UNCOMMON:
-                        reward.cards.add(AbstractDungeon.getColorlessCardFromPool(AbstractCard.CardRarity.UNCOMMON));
+                        do{
+                            c = AbstractDungeon.getColorlessCardFromPool(AbstractCard.CardRarity.UNCOMMON);
+                        }while(dupeCheck(reward.cards, c));
+                        if(this.upgrade && c.canUpgrade() && !c.upgraded){
+                            c.upgrade();
+                        }
+                        reward.cards.add(c);
                         break;
                     default:
-                        reward.cards.add(AbstractDungeon.returnColorlessCard());
+                        do{
+                            c = AbstractDungeon.returnColorlessCard();
+                        }while(dupeCheck(reward.cards, c));
+                        if(this.upgrade && c.canUpgrade() && !c.upgraded){
+                            c.upgrade();
+                        }
+                        reward.cards.add(c);
                         break;
                 }
             }
         }
         return reward;
+    }
+
+    private boolean dupeCheck(ArrayList<AbstractCard> cards, AbstractCard card){
+        boolean dupe = false;
+
+        for(AbstractCard c: cards){
+            if(c.cardID.equals(card.cardID)){
+                dupe = true;
+            }
+        }
+
+        return dupe;
     }
 
     private void getReward() {
