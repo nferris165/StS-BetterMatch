@@ -19,5 +19,19 @@
     "EXTENDED_DESCRIPTION": [
       "I can't play this card."
     ]
+  },
+  "betterMatch:ColorlessRareCard": {
+    "NAME": "Colorless Prize!",
+    "DESCRIPTION": "Match this card to win a choice of Colorless Rare cards!",
+    "EXTENDED_DESCRIPTION": [
+      "I can't play this card."
+    ]
+  },
+  "betterMatch:ColorlessUncommonCard": {
+    "NAME": "Colorless Prize!",
+    "DESCRIPTION": "Match this card to win a choice of Colorless Uncommon cards!",
+    "EXTENDED_DESCRIPTION": [
+      "I can't play this card."
+    ]
   }
 }

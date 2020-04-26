@@ -7,9 +7,7 @@ import basemod.ReflectionHacks;
 import basemod.eventUtil.AddEventParams;
 import basemod.eventUtil.EventUtils;
 import basemod.interfaces.*;
-import betterMatch.cards.CommonCard;
-import betterMatch.cards.RareCard;
-import betterMatch.cards.UncommonCard;
+import betterMatch.cards.*;
 import betterMatch.events.BetterMatchEvent;
 import betterMatch.util.TextureLoader;
 import com.badlogic.gdx.Gdx;
@@ -128,7 +126,8 @@ public class BetterMatch implements
         BaseMod.addCard(new RareCard());
         BaseMod.addCard(new UncommonCard());
         BaseMod.addCard(new CommonCard());
-
+        BaseMod.addCard(new ColorlessRareCard());
+        BaseMod.addCard(new ColorlessUncommonCard());
     }
 
     @Override

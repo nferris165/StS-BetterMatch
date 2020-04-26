@@ -1,9 +1,7 @@
 package betterMatch.events;
 
 import betterMatch.BetterMatch;
-import betterMatch.cards.CommonCard;
-import betterMatch.cards.RareCard;
-import betterMatch.cards.UncommonCard;
+import betterMatch.cards.*;
 import betterMatch.patches.customTags;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -101,7 +99,9 @@ public class BetterMatchEvent extends AbstractImageEvent {
             card.initializeDescription();
         }
         else{
-            card.color = AbstractDungeon.player.getCardColor();
+            if(card.color != AbstractCard.CardColor.COLORLESS){
+                card.color = AbstractDungeon.player.getCardColor();
+            }
         }
 
     }
@@ -116,7 +116,12 @@ public class BetterMatchEvent extends AbstractImageEvent {
         retVal.add(new UncommonCard());
         retVal.add(new CommonCard());
         retVal.add(new CommonCard());
-        retVal.add(new DramaticEntrance());
+        if(AbstractDungeon.miscRng.random(0.0F, 1.0F) < 0.3F){
+            retVal.add(new ColorlessRareCard());
+        }
+        else{
+            retVal.add(new ColorlessUncommonCard());
+        }
 
         for(AbstractCard c: retVal){
             for (AbstractRelic r : AbstractDungeon.player.relics) {
@@ -383,8 +388,14 @@ public class BetterMatchEvent extends AbstractImageEvent {
                 case "betterMatch:CommonCard":
                     AbstractDungeon.getCurrRoom().addCardReward(new RewardItem());
                     break;
-                default:
+                case "betterMatch:ColorlessRareCard":
                     AbstractDungeon.getCurrRoom().addCardReward(new RewardItem(AbstractCard.CardColor.COLORLESS));
+                    break;
+                case "betterMatch:ColorlessUncommonCard":
+                    AbstractDungeon.getCurrRoom().addCardReward(new RewardItem(AbstractCard.CardColor.COLORLESS));
+                    break;
+                default:
+                    AbstractDungeon.getCurrRoom().addCardReward(new RewardItem());
                     break;
             }
         }
