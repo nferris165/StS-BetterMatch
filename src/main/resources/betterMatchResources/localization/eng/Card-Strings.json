@@ -33,5 +33,12 @@
     "EXTENDED_DESCRIPTION": [
       "I can't play this card."
     ]
+  },
+  "betterMatch:CurseCard": {
+    "NAME": "GAME OVER",
+    "DESCRIPTION": "Match this card to end the game immediately and forfeit all prizes earned...",
+    "EXTENDED_DESCRIPTION": [
+      "I can't play this card."
+    ]
   }
 }

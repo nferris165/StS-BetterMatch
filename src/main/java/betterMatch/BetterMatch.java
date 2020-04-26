@@ -128,6 +128,7 @@ public class BetterMatch implements
         BaseMod.addCard(new CommonCard());
         BaseMod.addCard(new ColorlessRareCard());
         BaseMod.addCard(new ColorlessUncommonCard());
+        BaseMod.addCard(new CurseCard());
     }
 
     @Override

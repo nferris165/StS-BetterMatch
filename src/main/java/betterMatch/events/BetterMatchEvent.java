@@ -57,12 +57,11 @@ public class BetterMatchEvent extends AbstractImageEvent {
         this.screen = CUR_SCREEN.INTRO;
         float roll = AbstractDungeon.eventRng.random(0.0F, 1.0F);
         this.free = roll < 0.075F;
-        this.cards.group = this.initializeCards();
+        //this.cards.group = this.initializeCards();
+        this.cards.group = this.initializeUnpairedCards();
         Collections.shuffle(this.cards.group, new Random(AbstractDungeon.miscRng.randomLong()));
         this.imageEventText.setDialogOption(OPTIONS[0]);
         this.noCardsInRewards = true;
-
-        //BetterMatch.logger.info(roll + "\n");
 
         if(AbstractDungeon.ascensionLevel >= 15){
             this.cost = 150;
@@ -83,11 +82,6 @@ public class BetterMatchEvent extends AbstractImageEvent {
         BaseMod.addCard(new ColorlessRareCard());
         BaseMod.addCard(new ColorlessUncommonCard());
         */
-    }
-
-    @Override
-    public void onEnterRoom() {
-        AbstractDungeon.getCurrRoom().alterCardRarityProbabilities();
     }
 
     private void stripCard(AbstractCard card){
@@ -111,12 +105,6 @@ public class BetterMatchEvent extends AbstractImageEvent {
             card.cost = -2;
             card.initializeDescription();
         }
-        else{
-            if(card.color != AbstractCard.CardColor.COLORLESS){
-                card.color = AbstractDungeon.player.getCardColor();
-            }
-        }
-
     }
 
     private ArrayList<AbstractCard> initializeCards() {
@@ -144,6 +132,72 @@ public class BetterMatchEvent extends AbstractImageEvent {
         }
 
         retVal.addAll(retValCopy);
+
+        for(AbstractCard c: retVal){
+            c.current_x = (float)Settings.WIDTH / 2.0F;
+            c.target_x = c.current_x;
+            c.current_y = -300.0F * Settings.scale;
+            c.target_y = c.current_y;
+            stripCard(c);
+        }
+
+        return retVal;
+    }
+
+    private ArrayList<AbstractCard> initializeUnpairedCards() {
+        ArrayList<AbstractCard> retVal = new ArrayList<>();
+        boolean rare, cursed = false;
+
+        // Card Pool
+        retVal.add(new RareCard(AbstractDungeon.player.getCardColor(), AbstractCard.CardRarity.RARE));
+        retVal.add(new RareCard(AbstractDungeon.player.getCardColor(), AbstractCard.CardRarity.RARE));
+        retVal.add(new UncommonCard(AbstractDungeon.player.getCardColor(), AbstractCard.CardRarity.UNCOMMON));
+        retVal.add(new UncommonCard(AbstractDungeon.player.getCardColor(), AbstractCard.CardRarity.UNCOMMON));
+        retVal.add(new CommonCard(AbstractDungeon.player.getCardColor(), AbstractCard.CardRarity.COMMON));
+        retVal.add(new CommonCard(AbstractDungeon.player.getCardColor(), AbstractCard.CardRarity.COMMON));
+        //retVal.add(new CommonCard(AbstractDungeon.player.getCardColor(), AbstractCard.CardRarity.COMMON));
+        if(AbstractDungeon.miscRng.random(0.0F, 1.0F) < 0.3F){
+            rare = true;
+            retVal.add(new ColorlessRareCard(AbstractCard.CardRarity.RARE));
+            retVal.add(new ColorlessRareCard(AbstractCard.CardRarity.RARE));
+        }
+        else{
+            rare = false;
+            retVal.add(new ColorlessUncommonCard(AbstractCard.CardRarity.UNCOMMON));
+            retVal.add(new ColorlessUncommonCard(AbstractCard.CardRarity.UNCOMMON));
+        }
+
+        // Randomized extras
+        int size = 12 - retVal.size();
+        for(int i = 0; i < size; i++){
+            float roll = AbstractDungeon.miscRng.random(0.0F, 1.0F);
+            if(roll < 0.05F){
+                retVal.add(new RareCard(AbstractDungeon.player.getCardColor(), AbstractCard.CardRarity.RARE));
+            }
+            else if(roll < 0.35F){
+                retVal.add(new UncommonCard(AbstractDungeon.player.getCardColor(), AbstractCard.CardRarity.UNCOMMON));
+            }
+            else if(roll < 0.68F){
+                retVal.add(new CommonCard(AbstractDungeon.player.getCardColor(), AbstractCard.CardRarity.COMMON));
+            }
+            else if(roll < 0.93F){
+                if(rare){
+                    retVal.add(new ColorlessRareCard(AbstractCard.CardRarity.RARE));
+                }
+                else{
+                    retVal.add(new ColorlessUncommonCard(AbstractCard.CardRarity.UNCOMMON));
+                }
+            }
+            else{
+                if(!cursed){
+                    retVal.add(new CurseCard());
+                    cursed = true;
+                }
+                else{
+                    retVal.add(new RareCard(AbstractDungeon.player.getCardColor(), AbstractCard.CardRarity.COMMON));
+                }
+            }
+        }
 
         for(AbstractCard c: retVal){
             c.current_x = (float)Settings.WIDTH / 2.0F;
@@ -279,7 +333,6 @@ public class BetterMatchEvent extends AbstractImageEvent {
                         } else {
                             this.cardFlipped = false;
                             if (this.chosenCard.cardID.equals(this.hoveredCard.cardID)) {
-                                //BetterMatch.logger.info("Matched: " + this.chosenCard.cardID + "+" + this.hoveredCard.cardID +  "\n");
                                 this.waitTimer = 1.0F;
                                 this.chosenCard.targetDrawScale = 0.7F;
                                 this.chosenCard.target_x = (float) Settings.WIDTH / 2.0F;
@@ -490,7 +543,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
             (this.cards.group.get(i)).target_x = (float)(i % 4) * 210.0F * Settings.scale + 640.0F * Settings.scale;
             (this.cards.group.get(i)).target_y = (float)(i % 3) * -230.0F * Settings.scale + 750.0F * Settings.scale;
             (this.cards.group.get(i)).targetDrawScale = 0.5F;
-            (this.cards.group.get(i)).isFlipped = true;
+            //(this.cards.group.get(i)).isFlipped = true;
         }
 
     }

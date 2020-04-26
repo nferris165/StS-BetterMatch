@@ -40,9 +40,5 @@ public class ColorlessRareCard extends AbstractCustomCard{
 
     @Override
     public void upgrade() {
-        if (!upgraded) {
-            upgradeName();
-            initializeDescription();
-        }
     }
 }

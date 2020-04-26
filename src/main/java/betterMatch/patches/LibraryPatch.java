@@ -42,6 +42,7 @@ public class LibraryPatch {
             ___visibleCards.removeCard(CommonCard.ID);
             ___visibleCards.removeCard(ColorlessRareCard.ID);
             ___visibleCards.removeCard(ColorlessUncommonCard.ID);
+            ___visibleCards.removeCard(CurseCard.ID);
         }
     }
 
