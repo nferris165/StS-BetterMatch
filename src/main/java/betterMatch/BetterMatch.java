@@ -216,9 +216,9 @@ public class BetterMatch implements
                 .eventType(EventUtils.EventType.SHRINE).bonusCondition(
                         () -> {
                             if(AbstractDungeon.ascensionLevel >= 15){
-                                return AbstractDungeon.player.gold > 100;
+                                return AbstractDungeon.player.gold > 75;
                             } else{
-                                return AbstractDungeon.player.gold > 150;
+                                return AbstractDungeon.player.gold > 125;
                             }
                         }
                         ).create());

@@ -64,10 +64,10 @@ public class BetterMatchEvent extends AbstractImageEvent {
         this.noCardsInRewards = true;
 
         if(AbstractDungeon.ascensionLevel >= 15){
-            this.cost = 150;
+            this.cost = 125;
         }
         else{
-            this.cost = 100;
+            this.cost = 75;
         }
 
         if(free){
@@ -543,7 +543,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
             (this.cards.group.get(i)).target_x = (float)(i % 4) * 210.0F * Settings.scale + 640.0F * Settings.scale;
             (this.cards.group.get(i)).target_y = (float)(i % 3) * -230.0F * Settings.scale + 750.0F * Settings.scale;
             (this.cards.group.get(i)).targetDrawScale = 0.5F;
-            //(this.cards.group.get(i)).isFlipped = true;
+            (this.cards.group.get(i)).isFlipped = true;
         }
 
     }
