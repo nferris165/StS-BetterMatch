@@ -395,8 +395,10 @@ public class BetterMatchEvent extends AbstractImageEvent {
                             this.imageEventText.updateBodyText(MSG_2);
                         }
                         this.imageEventText.updateDialogOption(0, OPTIONS[2] + cost + OPTIONS[4]);
-                        this.imageEventText.setDialogOption(OPTIONS[2] + cost + OPTIONS[5]);
-                        this.imageEventText.setDialogOption(OPTIONS[2] + cost + OPTIONS[6]);
+                        if(!BetterMatch.optionLimit) {
+                            this.imageEventText.setDialogOption(OPTIONS[2] + cost + OPTIONS[5]);
+                            this.imageEventText.setDialogOption(OPTIONS[2] + cost + OPTIONS[6]);
+                        }
                         this.screen = CUR_SCREEN.RULE_EXPLANATION;
                         return;
                     default:

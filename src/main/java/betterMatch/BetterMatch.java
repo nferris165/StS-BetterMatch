@@ -12,7 +12,6 @@ import betterMatch.events.BetterMatchEvent;
 import betterMatch.util.TextureLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.compression.lzma.Base;
 import com.evacipated.cardcrawl.mod.stslib.Keyword;
 import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
@@ -46,8 +45,8 @@ public class BetterMatch implements
 
     //mod settings
     public static Properties defaultSettings = new Properties();
-    public static final String ascension_limit_settings = "ascensionLimit";
-    public static boolean disableAscLimit = false;
+    public static final String option_limit_settings = "ascensionLimit";
+    public static boolean optionLimit = false;
 
     private static final String MODNAME = "Better Match";
     private static final String AUTHOR = "Nichilas";
@@ -102,11 +101,11 @@ public class BetterMatch implements
         BaseMod.subscribe(this);
 
         logger.info("Adding mod settings");
-        defaultSettings.setProperty(ascension_limit_settings, "FALSE");
+        defaultSettings.setProperty(option_limit_settings, "FALSE");
         try {
             SpireConfig config = new SpireConfig("betterMatch", "betterMatchConfig", defaultSettings);
             config.load();
-            disableAscLimit = config.getBool(ascension_limit_settings);
+            optionLimit = config.getBool(option_limit_settings);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -190,17 +189,17 @@ public class BetterMatch implements
         Texture badgeTexture = TextureLoader.getTexture(BADGE_IMAGE);
         ModPanel settingsPanel = new ModPanel();
 
-        ModLabeledToggleButton ascLimitButton = new ModLabeledToggleButton("Enables ???",
+        ModLabeledToggleButton ascLimitButton = new ModLabeledToggleButton("Disables higher risk event options.",
                 350.0f, 750.0f, Settings.CREAM_COLOR, FontHelper.charDescFont,
-                disableAscLimit,
+                optionLimit,
                 settingsPanel,
                 (label) -> {},
                 (button) -> {
 
-                    disableAscLimit = button.enabled;
+                    optionLimit = button.enabled;
                     try {
                         SpireConfig config = new SpireConfig("betterMatch", "betterMatchConfig", defaultSettings);
-                        config.setBool(ascension_limit_settings, disableAscLimit);
+                        config.setBool(option_limit_settings, optionLimit);
                         config.save();
                     } catch (Exception e) {
                         e.printStackTrace();
