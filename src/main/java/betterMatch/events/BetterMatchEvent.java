@@ -194,7 +194,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
                     cursed = true;
                 }
                 else{
-                    retVal.add(new RareCard(AbstractDungeon.player.getCardColor(), AbstractCard.CardRarity.COMMON));
+                    retVal.add(new CommonCard(AbstractDungeon.player.getCardColor(), AbstractCard.CardRarity.COMMON));
                 }
             }
         }
