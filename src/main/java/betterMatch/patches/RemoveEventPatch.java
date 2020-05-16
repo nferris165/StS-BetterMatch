@@ -14,6 +14,6 @@ public class RemoveEventPatch {
     public static void Prefix(AbstractDungeon dungeon_instance) {
         AbstractDungeon.shrineList.remove(GremlinMatchGame.ID);
 
-        BetterMatch.logger.info(AbstractDungeon.shrineList + "\n\n");
+        //BetterMatch.logger.info(AbstractDungeon.shrineList + "\n\n");
     }
 }
