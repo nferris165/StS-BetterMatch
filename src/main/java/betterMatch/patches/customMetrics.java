@@ -23,7 +23,7 @@ public class customMetrics implements Runnable {
     private long lastPlaytimeEnd;
     public static final SimpleDateFormat timestampFormatter = new SimpleDateFormat("yyyyMMddHHmmss");
 
-    public static final String URL = "http://localhost:63342/StSMetrics/index.php";
+    public static final String URL = "http://localhost/upload.php";
 
 
     private void addData(Object key, Object value)
