@@ -1,6 +1,7 @@
 package betterMatch.patches;
 
 import betterMatch.BetterMatch;
+import betterMatch.events.BetterMatchEvent;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.net.HttpRequestBuilder;
@@ -21,6 +22,7 @@ public class customMetrics implements Runnable {
     private HashMap<Object, Object> params = new HashMap<>();
     private Gson gson = new Gson();
     private long lastPlaytimeEnd;
+    private boolean foundEvent = false;
     public static final SimpleDateFormat timestampFormatter = new SimpleDateFormat("yyyyMMddHHmmss");
 
     public static final String URL = "http://localhost/upload.php";
@@ -66,10 +68,10 @@ public class customMetrics implements Runnable {
         addData("play_id", UUID.randomUUID().toString());
         addData("build_version", CardCrawlGame.TRUE_VERSION_NUM);
         addData("seed_played", Settings.seed.toString());
-        addData("chose_seed", Boolean.valueOf(Settings.seedSet));
-        addData("seed_source_timestamp", Long.valueOf(Settings.seedSourceTimestamp));
+        //addData("chose_seed", Boolean.valueOf(Settings.seedSet));
+        //addData("seed_source_timestamp", Long.valueOf(Settings.seedSourceTimestamp));
         //addData("is_daily", Boolean.valueOf(Settings.isDailyRun));
-        addData("special_seed", Settings.specialSeed);
+        //addData("special_seed", Settings.specialSeed);
         //addData("is_trial", Boolean.valueOf(Settings.isTrial));
         //addData("is_endless", Boolean.valueOf(Settings.isEndless));
         if (death)
@@ -79,7 +81,7 @@ public class customMetrics implements Runnable {
             CardCrawlGame.metricData.max_hp_per_floor.add(Integer.valueOf(player.maxHealth));
             CardCrawlGame.metricData.gold_per_floor.add(Integer.valueOf(player.gold));
         }
-        addData("is_ascension_mode", Boolean.valueOf(AbstractDungeon.isAscensionMode));
+        //addData("is_ascension_mode", Boolean.valueOf(AbstractDungeon.isAscensionMode));
         addData("ascension_level", Integer.valueOf(AbstractDungeon.ascensionLevel));
 
         //addData("neow_bonus", CardCrawlGame.metricData.neowBonus);
@@ -92,7 +94,7 @@ public class customMetrics implements Runnable {
         addData("score", Integer.valueOf(DeathScreen.calcScore(!death)));
         this.lastPlaytimeEnd = (System.currentTimeMillis() / 1000L);
         addData("timestamp", Long.valueOf(this.lastPlaytimeEnd));
-        addData("local_time", timestampFormatter.format(Calendar.getInstance().getTime()));
+        //addData("local_time", timestampFormatter.format(Calendar.getInstance().getTime()));
         addData("playtime", Float.valueOf(CardCrawlGame.playtime));
         addData("player_experience", Long.valueOf(Settings.totalPlayTime));
         addData("master_deck", AbstractDungeon.player.masterDeck.getCardIdsForMetrics());
@@ -105,29 +107,39 @@ public class customMetrics implements Runnable {
         //addData("potions_floor_usage", CardCrawlGame.metricData.potions_floor_usage);
         //addData("current_hp_per_floor", CardCrawlGame.metricData.current_hp_per_floor);
         //addData("max_hp_per_floor", CardCrawlGame.metricData.max_hp_per_floor);
-        addData("gold_per_floor", CardCrawlGame.metricData.gold_per_floor);
+        //addData("gold_per_floor", CardCrawlGame.metricData.gold_per_floor);
         //addData("path_per_floor", CardCrawlGame.metricData.path_per_floor);
         //addData("path_taken", CardCrawlGame.metricData.path_taken);
         //addData("items_purchased", CardCrawlGame.metricData.items_purchased);
         //addData("item_purchase_floors", CardCrawlGame.metricData.item_purchase_floors);
         //addData("items_purged", CardCrawlGame.metricData.items_purged);
         //addData("items_purged_floors", CardCrawlGame.metricData.items_purged_floors);
-        addData("character_chosen", AbstractDungeon.player.chosenClass.name());
         //addData("card_choices", CardCrawlGame.metricData.card_choices);
-        addData("event_choices", CardCrawlGame.metricData.event_choices);
         //addData("boss_relics", CardCrawlGame.metricData.boss_relics);
         //addData("damage_taken", CardCrawlGame.metricData.damage_taken);
         //addData("potions_obtained", CardCrawlGame.metricData.potions_obtained);
-        addData("relics_obtained", CardCrawlGame.metricData.relics_obtained);
+        //addData("relics_obtained", CardCrawlGame.metricData.relics_obtained);
         //addData("campfire_choices", CardCrawlGame.metricData.campfire_choices);
+
+        addData("character_chosen", AbstractDungeon.player.chosenClass.name());
+
+
+        //addData("event_choices", CardCrawlGame.metricData.event_choices);
         addData("option_limit", BetterMatch.optionLimit);
     }
 
     public void run()
     {
-        //TODO: conditions
-        if (true) {
-            if ((Settings.UPLOAD_DATA) && (Settings.isStandardRun())) {
+        for(HashMap map : CardCrawlGame.metricData.event_choices){
+            if(map.get("event_name").equals(BetterMatchEvent.ID)){
+                foundEvent = true;
+                addData("event_choice", map);
+                break;
+            }
+        }
+
+        if (foundEvent) {
+            if (Settings.UPLOAD_DATA && Settings.isStandardRun() && !Settings.seedSet) {
                 gatherAllData();
                 sendPost();
             }
