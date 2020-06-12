@@ -40,6 +40,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
     private boolean upgrade = false;
     private boolean free;
     private int attemptCount, cost, cardsMatched, rewardCount;
+    private String eventChoice;
     private CardGroup cards;
     private float waitTimer;
     private CUR_SCREEN screen;
@@ -47,12 +48,14 @@ public class BetterMatchEvent extends AbstractImageEvent {
     private static final String MSG_3;
     private static final String GAME_MSG;
     private HashMap<Integer, String> map = new HashMap<>();
+    private List<String> cardsObtained;
 
     public BetterMatchEvent() {
         super(NAME, DESCRIPTIONS[2], IMG);
         this.cards = new CardGroup(CardGroup.CardGroupType.UNSPECIFIED);
         this.waitTimer = 0.0F;
         this.cardsMatched = 0;
+        this.cardsObtained = new ArrayList<>();
         this.rewardCount = 1;
         this.screen = CUR_SCREEN.INTRO;
         float roll = AbstractDungeon.eventRng.random(0.0F, 1.0F);
@@ -358,6 +361,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
                 if (this.chosenCard.cardID.equals(this.hoveredCard.cardID)) {
                     map.put(this.cardsMatched, this.chosenCard.cardID);
                     ++this.cardsMatched;
+                    this.cardsObtained.add(this.chosenCard.cardID);
                     this.cards.group.remove(this.chosenCard);
                     this.cards.group.remove(this.hoveredCard);
                     this.chosenCard = null;
@@ -407,6 +411,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
             case RULE_EXPLANATION:
                 switch(buttonPressed) {
                     case 0:
+                        this.eventChoice = "Five match attempts";
                         AbstractDungeon.player.loseGold(cost);
                         this.imageEventText.clearAllDialogs();
                         GenericEventDialog.hide();
@@ -415,6 +420,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
                         this.placeCards();
                         return;
                     case 1:
+                        this.eventChoice = "Three match attempts";
                         AbstractDungeon.player.loseGold(cost);
                         this.imageEventText.clearAllDialogs();
                         GenericEventDialog.hide();
@@ -424,6 +430,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
                         this.placeCards();
                         return;
                     case 2:
+                        this.eventChoice = "One match attempt";
                         AbstractDungeon.player.loseGold(cost);
                         this.imageEventText.clearAllDialogs();
                         GenericEventDialog.hide();
@@ -528,6 +535,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
     }
 
     private void getReward() {
+        logMetricObtainCards(ID, this.eventChoice + " and " + this.cardsMatched + " pairs matched.", cardsObtained);
         if(!AbstractDungeon.getCurrRoom().rewards.isEmpty()){
             AbstractDungeon.combatRewardScreen.open();
         }

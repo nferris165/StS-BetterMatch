@@ -68,10 +68,10 @@ public class customMetrics implements Runnable {
         addData("seed_played", Settings.seed.toString());
         addData("chose_seed", Boolean.valueOf(Settings.seedSet));
         addData("seed_source_timestamp", Long.valueOf(Settings.seedSourceTimestamp));
-        addData("is_daily", Boolean.valueOf(Settings.isDailyRun));
+        //addData("is_daily", Boolean.valueOf(Settings.isDailyRun));
         addData("special_seed", Settings.specialSeed);
-        addData("is_trial", Boolean.valueOf(Settings.isTrial));
-        addData("is_endless", Boolean.valueOf(Settings.isEndless));
+        //addData("is_trial", Boolean.valueOf(Settings.isTrial));
+        //addData("is_endless", Boolean.valueOf(Settings.isEndless));
         if (death)
         {
             AbstractPlayer player = AbstractDungeon.player;
@@ -82,11 +82,11 @@ public class customMetrics implements Runnable {
         addData("is_ascension_mode", Boolean.valueOf(AbstractDungeon.isAscensionMode));
         addData("ascension_level", Integer.valueOf(AbstractDungeon.ascensionLevel));
 
-        addData("neow_bonus", CardCrawlGame.metricData.neowBonus);
-        addData("neow_cost", CardCrawlGame.metricData.neowCost);
+        //addData("neow_bonus", CardCrawlGame.metricData.neowBonus);
+        //addData("neow_cost", CardCrawlGame.metricData.neowCost);
 
-        addData("is_beta", Boolean.valueOf(Settings.isBeta));
-        addData("is_prod", Boolean.valueOf(Settings.isDemo));
+        //addData("is_beta", Boolean.valueOf(Settings.isBeta));
+        //addData("is_prod", Boolean.valueOf(Settings.isDemo));
         addData("victory", Boolean.valueOf(!death));
         addData("floor_reached", Integer.valueOf(AbstractDungeon.floorNum));
         addData("score", Integer.valueOf(DeathScreen.calcScore(!death)));
@@ -96,30 +96,31 @@ public class customMetrics implements Runnable {
         addData("playtime", Float.valueOf(CardCrawlGame.playtime));
         addData("player_experience", Long.valueOf(Settings.totalPlayTime));
         addData("master_deck", AbstractDungeon.player.masterDeck.getCardIdsForMetrics());
-        addData("relics", AbstractDungeon.player.getRelicNames());
-        addData("gold", Integer.valueOf(AbstractDungeon.player.gold));
-        addData("campfire_rested", Integer.valueOf(CardCrawlGame.metricData.campfire_rested));
-        addData("campfire_upgraded", Integer.valueOf(CardCrawlGame.metricData.campfire_upgraded));
-        addData("purchased_purges", Integer.valueOf(CardCrawlGame.metricData.purchased_purges));
-        addData("potions_floor_spawned", CardCrawlGame.metricData.potions_floor_spawned);
-        addData("potions_floor_usage", CardCrawlGame.metricData.potions_floor_usage);
-        addData("current_hp_per_floor", CardCrawlGame.metricData.current_hp_per_floor);
-        addData("max_hp_per_floor", CardCrawlGame.metricData.max_hp_per_floor);
+        //addData("relics", AbstractDungeon.player.getRelicNames());
+        //addData("gold", Integer.valueOf(AbstractDungeon.player.gold));
+        //addData("campfire_rested", Integer.valueOf(CardCrawlGame.metricData.campfire_rested));
+        //addData("campfire_upgraded", Integer.valueOf(CardCrawlGame.metricData.campfire_upgraded));
+        //addData("purchased_purges", Integer.valueOf(CardCrawlGame.metricData.purchased_purges));
+        //addData("potions_floor_spawned", CardCrawlGame.metricData.potions_floor_spawned);
+        //addData("potions_floor_usage", CardCrawlGame.metricData.potions_floor_usage);
+        //addData("current_hp_per_floor", CardCrawlGame.metricData.current_hp_per_floor);
+        //addData("max_hp_per_floor", CardCrawlGame.metricData.max_hp_per_floor);
         addData("gold_per_floor", CardCrawlGame.metricData.gold_per_floor);
-        addData("path_per_floor", CardCrawlGame.metricData.path_per_floor);
-        addData("path_taken", CardCrawlGame.metricData.path_taken);
-        addData("items_purchased", CardCrawlGame.metricData.items_purchased);
-        addData("item_purchase_floors", CardCrawlGame.metricData.item_purchase_floors);
-        addData("items_purged", CardCrawlGame.metricData.items_purged);
-        addData("items_purged_floors", CardCrawlGame.metricData.items_purged_floors);
+        //addData("path_per_floor", CardCrawlGame.metricData.path_per_floor);
+        //addData("path_taken", CardCrawlGame.metricData.path_taken);
+        //addData("items_purchased", CardCrawlGame.metricData.items_purchased);
+        //addData("item_purchase_floors", CardCrawlGame.metricData.item_purchase_floors);
+        //addData("items_purged", CardCrawlGame.metricData.items_purged);
+        //addData("items_purged_floors", CardCrawlGame.metricData.items_purged_floors);
         addData("character_chosen", AbstractDungeon.player.chosenClass.name());
-        addData("card_choices", CardCrawlGame.metricData.card_choices);
+        //addData("card_choices", CardCrawlGame.metricData.card_choices);
         addData("event_choices", CardCrawlGame.metricData.event_choices);
-        addData("boss_relics", CardCrawlGame.metricData.boss_relics);
-        addData("damage_taken", CardCrawlGame.metricData.damage_taken);
-        addData("potions_obtained", CardCrawlGame.metricData.potions_obtained);
+        //addData("boss_relics", CardCrawlGame.metricData.boss_relics);
+        //addData("damage_taken", CardCrawlGame.metricData.damage_taken);
+        //addData("potions_obtained", CardCrawlGame.metricData.potions_obtained);
         addData("relics_obtained", CardCrawlGame.metricData.relics_obtained);
-        addData("campfire_choices", CardCrawlGame.metricData.campfire_choices);
+        //addData("campfire_choices", CardCrawlGame.metricData.campfire_choices);
+        addData("option_limit", BetterMatch.optionLimit);
     }
 
     public void run()
