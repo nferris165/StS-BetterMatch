@@ -25,7 +25,7 @@ public class customMetrics implements Runnable {
     private boolean foundEvent = false;
     public static final SimpleDateFormat timestampFormatter = new SimpleDateFormat("yyyyMMddHHmmss");
 
-    public static final String URL = "http://localhost/upload.php";
+    public static final String URL = "http://localhost/metrics";
 
 
     private void addData(Object key, Object value)
@@ -74,6 +74,7 @@ public class customMetrics implements Runnable {
         //addData("special_seed", Settings.specialSeed);
         //addData("is_trial", Boolean.valueOf(Settings.isTrial));
         //addData("is_endless", Boolean.valueOf(Settings.isEndless));
+        /*
         if (death)
         {
             AbstractPlayer player = AbstractDungeon.player;
@@ -81,6 +82,7 @@ public class customMetrics implements Runnable {
             CardCrawlGame.metricData.max_hp_per_floor.add(Integer.valueOf(player.maxHealth));
             CardCrawlGame.metricData.gold_per_floor.add(Integer.valueOf(player.gold));
         }
+        */
         //addData("is_ascension_mode", Boolean.valueOf(AbstractDungeon.isAscensionMode));
         addData("ascension_level", Integer.valueOf(AbstractDungeon.ascensionLevel));
 
