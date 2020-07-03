@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.net.HttpRequestBuilder;
 import com.google.gson.Gson;
+import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
@@ -99,7 +100,7 @@ public class customMetrics implements Runnable {
         //addData("local_time", timestampFormatter.format(Calendar.getInstance().getTime()));
         addData("playtime", Float.valueOf(CardCrawlGame.playtime));
         addData("player_experience", Long.valueOf(Settings.totalPlayTime));
-        addData("master_deck", AbstractDungeon.player.masterDeck.getCardIdsForMetrics());
+        addData("master_deck", getDeck());
         //addData("relics", AbstractDungeon.player.getRelicNames());
         //addData("gold", Integer.valueOf(AbstractDungeon.player.gold));
         //addData("campfire_rested", Integer.valueOf(CardCrawlGame.metricData.campfire_rested));
@@ -128,6 +129,22 @@ public class customMetrics implements Runnable {
 
         //addData("event_choices", CardCrawlGame.metricData.event_choices);
         addData("option_limit", BetterMatch.optionLimit);
+    }
+
+    private HashMap getDeck(){
+        HashMap<String, Integer> map = new HashMap<>();
+        for(AbstractCard card: AbstractDungeon.player.masterDeck.group){
+            if(!map.containsKey(card.name)){
+                map.put(card.name, 1);
+            }
+            else{
+                int x = map.get(card.name);
+                x++;
+                map.remove(card.name);
+                map.put(card.name, x);
+            }
+        }
+        return map;
     }
 
     public void run()
