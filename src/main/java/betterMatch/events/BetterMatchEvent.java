@@ -411,7 +411,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
             case RULE_EXPLANATION:
                 switch(buttonPressed) {
                     case 0:
-                        this.eventChoice = "Five match attempts";
+                        this.eventChoice = "1";
                         AbstractDungeon.player.loseGold(cost);
                         this.imageEventText.clearAllDialogs();
                         GenericEventDialog.hide();
@@ -420,7 +420,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
                         this.placeCards();
                         return;
                     case 1:
-                        this.eventChoice = "Three match attempts";
+                        this.eventChoice = "2";
                         AbstractDungeon.player.loseGold(cost);
                         this.imageEventText.clearAllDialogs();
                         GenericEventDialog.hide();
@@ -430,7 +430,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
                         this.placeCards();
                         return;
                     case 2:
-                        this.eventChoice = "One match attempt";
+                        this.eventChoice = "3";
                         AbstractDungeon.player.loseGold(cost);
                         this.imageEventText.clearAllDialogs();
                         GenericEventDialog.hide();
@@ -535,7 +535,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
     }
 
     private void getReward() {
-        logMetricObtainCards(ID, this.eventChoice + " and " + this.cardsMatched + " pairs matched.", cardsObtained);
+        logMetricObtainCards(ID, this.eventChoice, cardsObtained);
         if(!AbstractDungeon.getCurrRoom().rewards.isEmpty()){
             AbstractDungeon.combatRewardScreen.open();
         }

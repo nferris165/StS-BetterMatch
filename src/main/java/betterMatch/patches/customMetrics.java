@@ -16,6 +16,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.UUID;
 
 public class customMetrics implements Runnable {
@@ -36,7 +37,8 @@ public class customMetrics implements Runnable {
 
     private void sendPost()
     {
-        HashMap<String, Serializable> event = new HashMap<>();
+        LinkedHashMap<String, Serializable> event = new LinkedHashMap<>();
+        event.put("title", "mod-BetterMatch");
         event.put("event", this.params);
         event.put("name", CardCrawlGame.playerName);
         event.put("alias", CardCrawlGame.alias);
