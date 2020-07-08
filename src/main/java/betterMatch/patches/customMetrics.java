@@ -136,14 +136,14 @@ public class customMetrics implements Runnable {
     private HashMap getDeck(){
         HashMap<String, Integer> map = new HashMap<>();
         for(AbstractCard card: AbstractDungeon.player.masterDeck.group){
-            if(!map.containsKey(card.name)){
-                map.put(card.name, 1);
+            if(!map.containsKey(card.cardID)){
+                map.put(card.cardID, 1);
             }
             else{
-                int x = map.get(card.name);
+                int x = map.get(card.cardID);
                 x++;
-                map.remove(card.name);
-                map.put(card.name, x);
+                map.remove(card.cardID);
+                map.put(card.cardID, x);
             }
         }
         return map;
