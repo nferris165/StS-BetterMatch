@@ -27,7 +27,7 @@ public class customMetrics implements Runnable {
     private boolean foundEvent = false;
     public static final SimpleDateFormat timestampFormatter = new SimpleDateFormat("yyyyMMddHHmmss");
 
-    public static final String URL = "http://localhost/metrics";
+    public static final String URL = "https://metricsanalysis.azurewebsites.net/metrics";
 
 
     private void addData(Object key, Object value)
@@ -38,7 +38,7 @@ public class customMetrics implements Runnable {
     private void sendPost()
     {
         LinkedHashMap<String, Serializable> event = new LinkedHashMap<>();
-        event.put("title", "mod-BetterMatch");
+        event.put("title", "BetterMatch");
         event.put("event", this.params);
         event.put("name", CardCrawlGame.playerName);
         event.put("alias", CardCrawlGame.alias);
