@@ -7,14 +7,12 @@ import com.badlogic.gdx.Net;
 import com.badlogic.gdx.net.HttpRequestBuilder;
 import com.google.gson.Gson;
 import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.screens.DeathScreen;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.UUID;
@@ -94,7 +92,7 @@ public class customMetrics implements Runnable {
 
         //addData("is_beta", Boolean.valueOf(Settings.isBeta));
         //addData("is_prod", Boolean.valueOf(Settings.isDemo));
-        addData("victory", Boolean.valueOf(!death));
+        addData("victory", Boolean.valueOf(death));
         addData("floor_reached", Integer.valueOf(AbstractDungeon.floorNum));
         addData("score", Integer.valueOf(DeathScreen.calcScore(!death)));
         this.lastPlaytimeEnd = (System.currentTimeMillis() / 1000L);
