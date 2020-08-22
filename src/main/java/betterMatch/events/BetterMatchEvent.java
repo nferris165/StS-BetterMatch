@@ -58,8 +58,12 @@ public class BetterMatchEvent extends AbstractImageEvent {
         this.cardsObtained = new ArrayList<>();
         this.rewardCount = 1;
         this.screen = CUR_SCREEN.INTRO;
-        float roll = AbstractDungeon.eventRng.random(0.0F, 1.0F);
-        this.free = roll < 0.075F;
+        if(BetterMatch.freeLimit){
+            this.free = false;
+        } else{
+            float roll = AbstractDungeon.eventRng.random(0.0F, 1.0F);
+            this.free = roll < 0.075F;
+        }
         //this.cards.group = this.initializeCards();
         this.cards.group = this.initializeUnpairedCards();
         Collections.shuffle(this.cards.group, new Random(AbstractDungeon.miscRng.randomLong()));

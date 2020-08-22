@@ -5,13 +5,17 @@ import betterMatch.events.BetterMatchEvent;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.net.HttpRequestBuilder;
+import com.evacipated.cardcrawl.modthespire.Loader;
 import com.google.gson.Gson;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.rooms.VictoryRoom;
 import com.megacrit.cardcrawl.screens.DeathScreen;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -67,7 +71,8 @@ public class customMetrics implements Runnable {
 
     private void gatherAllData()
     {
-        Boolean death = Boolean.valueOf(AbstractDungeon.deathScreen.isVictory);
+        //Boolean death = Boolean.valueOf(AbstractDungeon.deathScreen.isVictory);
+        Boolean victory = AbstractDungeon.getCurrRoom() instanceof VictoryRoom;
         addData("play_id", UUID.randomUUID().toString());
         addData("build_version", CardCrawlGame.TRUE_VERSION_NUM);
         addData("seed_played", Settings.seed.toString());
@@ -94,9 +99,13 @@ public class customMetrics implements Runnable {
 
         //addData("is_beta", Boolean.valueOf(Settings.isBeta));
         //addData("is_prod", Boolean.valueOf(Settings.isDemo));
+<<<<<<< Updated upstream
         addData("victory", Boolean.valueOf(!death));
+=======
+        addData("victory", victory);
+>>>>>>> Stashed changes
         addData("floor_reached", Integer.valueOf(AbstractDungeon.floorNum));
-        addData("score", Integer.valueOf(DeathScreen.calcScore(!death)));
+        addData("score", Integer.valueOf(DeathScreen.calcScore(victory)));
         this.lastPlaytimeEnd = (System.currentTimeMillis() / 1000L);
         addData("timestamp", Long.valueOf(this.lastPlaytimeEnd));
         //addData("local_time", timestampFormatter.format(Calendar.getInstance().getTime()));
@@ -131,6 +140,30 @@ public class customMetrics implements Runnable {
 
         //addData("event_choices", CardCrawlGame.metricData.event_choices);
         addData("option_limit", BetterMatch.optionLimit);
+        addData("mods", getModList());
+    }
+
+    private String getModList(){
+        StringBuilder retVal = new StringBuilder();
+        String mod;
+        for(int i = 0; i < Loader.MODINFOS.length; ++i) {
+            if(i != 0){
+                retVal.append("-|-");
+            }
+            if(Loader.MODINFOS[i].Name != null){
+                mod = StringUtils.substring(Loader.MODINFOS[i].Name, 0, 30);
+                mod = mod.replace("'", "");
+            }
+            else{
+                mod = " ";
+            }
+            retVal.append(mod);
+            if(retVal.length() >= 1950){
+                retVal.append("---MAX SIZE REACHED!!!");
+                break;
+            }
+        }
+        return retVal.toString();
     }
 
     private HashMap getDeck(){
