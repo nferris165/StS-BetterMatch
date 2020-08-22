@@ -99,11 +99,7 @@ public class customMetrics implements Runnable {
 
         //addData("is_beta", Boolean.valueOf(Settings.isBeta));
         //addData("is_prod", Boolean.valueOf(Settings.isDemo));
-<<<<<<< Updated upstream
-        addData("victory", Boolean.valueOf(!death));
-=======
         addData("victory", victory);
->>>>>>> Stashed changes
         addData("floor_reached", Integer.valueOf(AbstractDungeon.floorNum));
         addData("score", Integer.valueOf(DeathScreen.calcScore(victory)));
         this.lastPlaytimeEnd = (System.currentTimeMillis() / 1000L);
