@@ -62,7 +62,7 @@ public class BetterMatchEvent extends AbstractImageEvent {
             this.free = false;
         } else{
             float roll = AbstractDungeon.eventRng.random(0.0F, 1.0F);
-            this.free = roll < 0.075F;
+            this.free = roll < 0.05F;
         }
         //this.cards.group = this.initializeCards();
         this.cards.group = this.initializeUnpairedCards();

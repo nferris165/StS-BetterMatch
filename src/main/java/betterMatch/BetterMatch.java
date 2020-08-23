@@ -9,7 +9,6 @@ import basemod.eventUtil.EventUtils;
 import basemod.interfaces.*;
 import betterMatch.cards.*;
 import betterMatch.events.BetterMatchEvent;
-import betterMatch.patches.customMetrics;
 import betterMatch.util.TextureLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -40,7 +39,6 @@ public class BetterMatch implements
         EditStringsSubscriber,
         EditKeywordsSubscriber,
         EditCharactersSubscriber,
-        PostDeathSubscriber,
         PostInitializeSubscriber{
 
     public static final Logger logger = LogManager.getLogger(BetterMatch.class.getName());
@@ -231,6 +229,7 @@ public class BetterMatch implements
 
 
         settingsPanel.addUIElement(ascLimitButton);
+        settingsPanel.addUIElement(freeLimitButton);
         BaseMod.registerModBadge(badgeTexture, MODNAME, AUTHOR, DESCRIPTION, settingsPanel);
 
         //events
@@ -238,23 +237,14 @@ public class BetterMatch implements
                 .eventType(EventUtils.EventType.SHRINE).bonusCondition(
                         () -> {
                             if(AbstractDungeon.ascensionLevel >= 15){
-                                return AbstractDungeon.player.gold > 75;
-                            } else{
                                 return AbstractDungeon.player.gold > 125;
+                            } else{
+                                return AbstractDungeon.player.gold > 75;
                             }
                         }
                         ).create());
 
         //audio
         loadAudio();
-    }
-
-    @Override
-    public void receivePostDeath() {
-        customMetrics metrics = new customMetrics();
-
-        Thread t = new Thread(metrics);
-        t.setName("Metrics");
-        t.start();
     }
 }
