@@ -453,7 +453,6 @@ public class BetterMatchEvent extends AbstractImageEvent {
             case REWARD:
                 break;
         }
-
     }
 
     private void setReward(){
@@ -534,7 +533,6 @@ public class BetterMatchEvent extends AbstractImageEvent {
                 dupe = true;
             }
         }
-
         return dupe;
     }
 
