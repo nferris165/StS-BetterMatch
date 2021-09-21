@@ -1,3 +1,8 @@
 {
-
+  "ConfigMenuText": {
+    "TEXT": [
+      "Disables higher risk event options.",
+      "Disables the 'Lucky Customer' mechanic."
+    ]
+  }
 }
