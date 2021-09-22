@@ -202,7 +202,7 @@ public class BetterMatch implements
 
     @Override
     public void receivePostInitialize() {
-        UIStrings configStrings = CardCrawlGame.languagePack.getUIString("ConfigMenuText");
+        UIStrings configStrings = CardCrawlGame.languagePack.getUIString(makeID("ConfigMenuText"));
         Texture badgeTexture = TextureLoader.getTexture(BADGE_IMAGE);
         ModPanel settingsPanel = new ModPanel();
 
@@ -223,7 +223,7 @@ public class BetterMatch implements
                     }
                 });
 
-        ModLabeledToggleButton freeLimitButton = new ModLabeledToggleButton(configStrings.TEXT[0],
+        ModLabeledToggleButton freeLimitButton = new ModLabeledToggleButton(configStrings.TEXT[1],
                 350.0f, 700.0f, Settings.CREAM_COLOR, FontHelper.charDescFont,
                 freeLimit,
                 settingsPanel,
