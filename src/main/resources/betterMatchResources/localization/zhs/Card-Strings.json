@@ -1,0 +1,44 @@
+{
+  "betterMatch:RareCard": {
+    "NAME": "稀有奖！",
+    "DESCRIPTION": "配对好这张牌，你就可以赢得一次稀有牌的三选一机会！",
+    "EXTENDED_DESCRIPTION": [
+      "我不能打出这张牌。"
+    ]
+  },
+  "betterMatch:UncommonCard": {
+    "NAME": "罕见奖！",
+    "DESCRIPTION": "配对好这张牌，你就可以赢得一次罕见牌的三选一机会！",
+    "EXTENDED_DESCRIPTION": [
+      "我不能打出这张牌。"
+    ]
+  },
+  "betterMatch:CommonCard": {
+    "NAME": "普通奖！",
+    "DESCRIPTION": "配对好这张牌，你就可以赢得一次普通牌的三选一机会！",
+    "EXTENDED_DESCRIPTION": [
+      "我不能打出这张牌。"
+    ]
+  },
+  "betterMatch:ColorlessRareCard": {
+    "NAME": "无色奖！",
+    "DESCRIPTION": "配对好这张牌，你就可以赢得一次稀有无色牌的三选一机会！",
+    "EXTENDED_DESCRIPTION": [
+      "我不能打出这张牌。"
+    ]
+  },
+  "betterMatch:ColorlessUncommonCard": {
+    "NAME": "无色奖！",
+    "DESCRIPTION": "配对好这张牌，你就可以赢得一次罕见无色牌的三选一机会！",
+    "EXTENDED_DESCRIPTION": [
+      "我不能打出这张牌。"
+    ]
+  },
+  "betterMatch:CurseCard": {
+    "NAME": "游戏结束",
+    "DESCRIPTION": "配对好这张牌，你就……游戏就立即结束了……",
+    "EXTENDED_DESCRIPTION": [
+      "我不能打出这张牌。"
+    ]
+  }
+}
